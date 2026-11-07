@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta property="og:title" content="Artim Labs">
+<meta property="og:description" content="Rəqəmsal platformalar üçün gəlir modulları">
+<meta property="og:image" content="og.png">
+<title>Artim Labs</title>
+<meta name="description" content="Artim Labs — rəqəmsal platformalar üçün gəlir modulları. Revenue modules for digital platforms.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;700&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+
+/* Layout: a cool "platform" grid; saffron appears only where a module docks onto something */
+:root{
+  --bg:#F4F6F3; --surface:#FFFFFF; --fg:#0F2B2E; --muted:#4E6663; --line:#D6DFDB;
+  --accent:#E8A33D; --accent-text:#9A5F0C; --on-accent:#1A1205;
+  --invert-bg:#0F2B2E; --invert-fg:#EEF3F0; --invert-muted:#A9BFBA; --invert-line:#2A4A4C;
+  --display:"Geologica","Onest","Segoe UI",system-ui,sans-serif;
+  --body:"Onest","Segoe UI",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --r:6px; --max:1140px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0A1C1E; --surface:#10272A; --fg:#E8EFEC; --muted:#94ABA6; --line:#21403F;
+  --accent:#EDB04F; --accent-text:#F0B85E; --on-accent:#1A1205;
+  --invert-bg:#163A3C; --invert-fg:#EEF3F0; --invert-muted:#A9BFBA; --invert-line:#2D5254; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0A1C1E; --surface:#10272A; --fg:#E8EFEC; --muted:#94ABA6; --line:#21403F;
+  --accent:#EDB04F; --accent-text:#F0B85E; --on-accent:#1A1205;
+  --invert-bg:#163A3C; --invert-fg:#EEF3F0; --invert-muted:#A9BFBA; --invert-line:#2D5254; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+.wrap{max-width:var(--max);margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:700;letter-spacing:-.02em;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.1rem,5.2vw,3.9rem);line-height:1.05}
+h2{font-size:clamp(1.6rem,3.4vw,2.5rem);line-height:1.12}
+h3{font-size:1.15rem;line-height:1.3;letter-spacing:-.01em}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-text);display:flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:9px;height:9px;border-radius:2px;background:var(--accent);flex:none}
+.lead{font-size:clamp(1.05rem,1.6vw,1.2rem);color:var(--muted);max-width:60ch}
+.btn{display:inline-flex;align-items:center;gap:10px;font:600 1rem/1 var(--body);padding:15px 22px;border-radius:var(--r);text-decoration:none;border:1.5px solid var(--fg);cursor:pointer;transition:transform .15s ease,background .15s ease}
+.btn-primary{background:var(--fg);color:var(--bg)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--fg)}
+.btn-ghost:hover{background:var(--surface)}
+.btn .dock{width:8px;height:8px;border-radius:2px;background:var(--accent);margin-top:-10px}
+
+/* header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hbar{display:flex;align-items:center;gap:24px;padding-block:14px}
+.brand{display:flex;align-items:center;text-decoration:none;color:var(--fg)}
+.brand svg{height:46px;width:auto;display:block}
+nav.main{display:flex;gap:22px;margin-left:auto;font-size:.95rem}
+nav.main a{text-decoration:none;color:var(--muted)}
+nav.main a:hover{color:var(--fg)}
+.langs{display:flex;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;font-family:var(--mono);font-size:.78rem}
+.langs button{background:none;border:0;color:var(--muted);padding:7px 10px;cursor:pointer;font:inherit}
+.langs button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.hcta{padding:10px 16px;font-size:.92rem}
+@media (max-width:900px){nav.main{display:none}.langs{margin-left:auto}}
+@media (max-width:520px){.hcta{display:none}.brand svg{height:38px}}
+
+/* hero */
+.hero{padding-block:72px 64px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center}
+.hero-grid>*{min-width:0}
+.hero h1{margin:18px 0 22px}
+.hero .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:44px;border-top:1px solid var(--line)}
+.facts div{padding:16px 16px 0 0}
+.facts b{display:block;font-family:var(--display);font-size:1.5rem;letter-spacing:-.02em}
+.facts span{font-size:.88rem;color:var(--muted)}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr}.hero{padding-block:44px 40px}}
+@media (max-width:460px){.facts{grid-template-columns:1fr 1fr}.facts div:last-child{grid-column:1/-1}}
+
+/* hero diagram: a platform with a docked module and the arithmetic of one example */
+.diagram{background:var(--invert-bg);color:var(--invert-fg);border-radius:10px;padding:26px;position:relative}
+.dg-platform{border:1px solid var(--invert-line);border-radius:var(--r);padding:16px;position:relative}
+.dg-label{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--invert-muted)}
+.dg-rows{display:grid;gap:8px;margin-top:12px}
+.dg-rows i{display:block;height:10px;border-radius:3px;background:var(--invert-line)}
+.dg-rows i:nth-child(2){width:78%}.dg-rows i:nth-child(3){width:55%}
+.dg-module{position:absolute;right:-14px;top:-18px;background:var(--accent);color:var(--on-accent);border-radius:var(--r);padding:10px 14px;font-weight:600;font-size:.9rem;box-shadow:0 10px 24px -12px rgba(0,0,0,.5);animation:dock .9s cubic-bezier(.2,.8,.2,1) both .2s}
+@keyframes dock{from{transform:translate(18px,-18px);opacity:.4}to{transform:none;opacity:1}}
+.dg-calc{margin-top:22px;font-family:var(--mono);font-size:.86rem;font-variant-numeric:tabular-nums;display:grid;gap:6px}
+.dg-calc div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--invert-line);padding-bottom:6px}
+.dg-calc .sum{border:0;color:var(--accent);font-weight:500;font-size:1rem}
+.dg-note{margin-top:12px;font-size:.78rem;color:var(--invert-muted)}
+
+/* sections */
+section{padding-block:80px;border-top:1px solid var(--line)}
+.shead{display:grid;gap:14px;max-width:760px;margin-bottom:44px}
+@media (max-width:700px){section{padding-block:56px}}
+
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.why>div{min-width:0;display:grid;gap:10px;align-content:start}
+.why p{color:var(--muted)}
+.why .k{font-family:var(--mono);font-size:.8rem;color:var(--accent-text)}
+@media (max-width:820px){.why{grid-template-columns:1fr;gap:24px}}
+
+.mods{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.mod{background:var(--surface);padding:26px;display:grid;gap:10px;align-content:start;min-width:0;position:relative}
+.mod .sector{font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.mod p{color:var(--muted);font-size:.96rem}
+.mod .money{margin-top:6px;font-size:.88rem;font-weight:600;display:flex;gap:8px;align-items:center}
+.mod .money::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--accent);flex:none}
+.mods-note{margin-top:18px;color:var(--muted);font-size:.95rem}
+@media (max-width:900px){.mods{grid-template-columns:1fr 1fr}}
+@media (max-width:600px){.mods{grid-template-columns:1fr}}
+
+.models{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch}
+.model{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:32px;display:grid;gap:16px;align-content:start;min-width:0}
+.model.partner{background:var(--invert-bg);color:var(--invert-fg);border-color:var(--invert-bg);position:relative}
+.model.partner .tag{position:absolute;top:-12px;right:24px;background:var(--accent);color:var(--on-accent);font:600 .78rem/1 var(--body);padding:7px 10px;border-radius:4px}
+.model .price{font-family:var(--display);font-size:2rem;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.model .price small{display:block;font-family:var(--body);font-size:.9rem;font-weight:400;color:var(--muted);letter-spacing:0;margin-top:6px}
+.model.partner .price small,.model.partner .fit{color:var(--invert-muted)}
+.model ul{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.model li{display:grid;grid-template-columns:18px 1fr;gap:10px}
+.model li::before{content:"";width:8px;height:8px;margin-top:9px;border-radius:2px;background:var(--fg)}
+.model.partner li::before{background:var(--accent)}
+.model .fit{font-size:.92rem;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+.model.partner .fit{border-color:var(--invert-line)}
+.example{margin-top:20px;border:1px dashed var(--line);border-radius:10px;padding:20px 24px;display:flex;flex-wrap:wrap;gap:12px 28px;align-items:baseline;font-variant-numeric:tabular-nums}
+.example .lbl{font-family:var(--mono);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.example b{font-family:var(--display)}
+.example .acc{color:var(--accent-text)}
+@media (max-width:760px){.models{grid-template-columns:1fr}}
+
+.steps{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(5,1fr);gap:0;counter-reset:s}
+.steps li{counter-increment:s;padding:0 20px 0 0;display:grid;gap:10px;align-content:start;min-width:0;position:relative}
+.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:.8rem;color:var(--muted);border-top:2px solid var(--fg);padding-top:14px}
+.steps li:first-child::before{border-color:var(--accent)}
+.steps p{color:var(--muted);font-size:.95rem}
+.steps .t{font-family:var(--mono);font-size:.78rem;color:var(--accent-text)}
+@media (max-width:980px){.steps{grid-template-columns:1fr 1fr;gap:32px 0}}
+@media (max-width:560px){.steps{grid-template-columns:1fr}}
+
+.prom{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px 36px}
+.prom>div{display:grid;gap:8px;align-content:start;padding-left:18px;border-left:2px solid var(--line)}
+.prom p{color:var(--muted);font-size:.96rem}
+
+.faq{display:grid;gap:0;max-width:820px;border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;list-style:none;padding:20px 40px 20px 0;font-family:var(--display);font-weight:500;font-size:1.1rem;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:4px;top:16px;font-size:1.5rem;color:var(--accent-text);font-weight:400}
+.faq details[open] summary::after{content:"−"}
+.faq details p{padding:0 0 22px;color:var(--muted);max-width:68ch}
+
+.contact{background:var(--invert-bg);color:var(--invert-fg);border-top:0}
+.contact .lead{color:var(--invert-muted)}
+.contact .eyebrow{color:var(--accent)}
+.cgrid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.cgrid>*{min-width:0}
+.direct{margin-top:32px;display:grid;gap:14px;font-size:.98rem}
+.direct .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.direct .lbl{font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--invert-muted);min-width:90px}
+.direct code{font-family:var(--mono);font-size:.95rem;user-select:all}
+.copy{background:none;border:1px solid var(--invert-line);color:var(--invert-fg);border-radius:4px;font:500 .78rem/1 var(--body);padding:6px 9px;cursor:pointer}
+form{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+form .full{grid-column:1/-1}
+label{display:grid;gap:6px;font-size:.85rem;color:var(--invert-muted)}
+input,textarea{font:inherit;font-size:1rem;color:var(--invert-fg);background:transparent;border:1px solid var(--invert-line);border-radius:var(--r);padding:12px 14px;width:100%}
+input:focus,textarea:focus{outline:none;border-color:var(--accent)}
+textarea{min-height:110px;resize:vertical}
+form .btn{background:var(--accent);color:var(--on-accent);border-color:var(--accent);justify-self:start}
+.fmsg{font-size:.92rem;color:var(--invert-muted)}
+@media (max-width:860px){.cgrid{grid-template-columns:1fr;gap:36px}}
+@media (max-width:520px){form{grid-template-columns:1fr}}
+
+footer{padding-block:28px;font-size:.88rem;color:var(--muted)}
+.fbar{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between}
+.fbar svg{height:32px;width:auto;color:var(--fg)}
+</style>
+</head>
+<body>
+
+
+<header>
+  <div class="wrap hbar">
+    <a class="brand" href="#top" aria-label="Artim Labs"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -2 230.8 48" aria-hidden="true" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTpmNTJiNzJkNy0zYTFmLTQ0ZTAtYWViOC0zODc2YzM5MDlkYjkAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaC0DRKIzCoq6aRlmA4c3logAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDo0NTE1ZDg0Yi1mZWYzLTRmZTAtOTFiMS03OTNkNWUzMjhlM2VscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoXy11uWVdzImOoaFqp3HyxwAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggLLIv04Gd7ZHPekZJMuzy77frw/uRA0aoV23n6mZWBa6kZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaOgOGJ+mTzOqHqPYbmaHgWcAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCAl7DgrzuTlhxazOoV75rFeUnz1AUghSxPqvN7T51pRJmRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBi7Zmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOmY1MmI3MmQ3LTNhMWYtNDRlMC1hZWI4LTM4NzZjMzkwOWRiOS9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjYzNjAzYzBlLWE0OGMtNDY3ZS04ZTc5LWU3MWQ4ODYyNTBhNXJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCAssi/TgZ3tkc96Rkky7PLvt+vD+5EDRqhXbefqZlYFrqJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggHqxDZrlpTPDMotATRwWu/5MaO81u1n5A0ZXVlo4TjIWiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFgg3yVk3+5zyD06ktEpNDfwK9yOJ7EUhER5w/nZWQVbzBN0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQFnMVSG7qA5fUW1j0P5uroV1BnP4cXJ2DcWyLXBqT6QqPJPw2geB8VbP4p+0KJYsdXhbaHvwLvjHO3b4i5o540g=</c2pa:manifest></metadata><rect x="0" y="12.0" width="28.0" height="28.0" rx="3.0" fill="currentColor"/><rect x="30.0" y="0" width="12.0" height="12.0" rx="2.25" style="fill:var(--accent)"/><path d="M67.306 40.66Q65.062 40.66 63.28 39.791Q61.498 38.922 60.464 37.305Q59.43 35.688 59.43 33.422Q59.43 31.486 60.387 29.990000000000002Q61.344 28.494 63.28 27.526Q65.216 26.558 68.15299999999999 26.217Q71.09 25.876 75.02799999999999 26.228L75.094 30.716Q73.004 30.342 71.321 30.331Q69.638 30.32 68.461 30.617Q67.28399999999999 30.914 66.64599999999999 31.53Q66.008 32.146 66.008 33.048Q66.008 34.214 66.899 34.83Q67.78999999999999 35.446 69.286 35.446Q70.584 35.446 71.629 34.983999999999995Q72.674 34.522 73.301 33.631Q73.928 32.74 73.928 31.442V26.316000000000003Q73.928 25.106 73.422 24.182000000000002Q72.916 23.258000000000003 71.827 22.741Q70.738 22.224 68.934 22.224Q67.196 22.224 65.47999999999999 22.741Q63.763999999999996 23.258000000000003 62.4 24.292L60.552 19.342000000000002Q62.73 17.978 65.216 17.329Q67.702 16.68 70.1 16.68Q73.268 16.68 75.67699999999999 17.692Q78.086 18.704 79.44999999999999 20.816000000000003Q80.814 22.928 80.814 26.228V40.0H74.588V37.624Q73.51 39.076 71.618 39.867999999999995Q69.726 40.66 67.306 40.66ZM86.512 40.0V17.560000000000002H93.728V20.178Q94.74 18.44 96.41199999999999 17.648000000000003Q98.08399999999999 16.856 100.042 16.856Q100.78999999999999 16.856 101.38399999999999 16.944000000000003Q101.978 17.032 102.55 17.142000000000003L101.692 24.556Q100.94399999999999 24.292 100.10799999999999 24.127000000000002Q99.27199999999999 23.962 98.43599999999999 23.962Q96.39 23.962 95.059 25.139000000000003Q93.728 26.316000000000003 93.728 28.582V40.0ZM115.904 40.66Q112.16399999999999 40.66 110.02999999999999 38.559Q107.89599999999999 36.458 107.89599999999999 32.278V11.136000000000003H115.112V17.560000000000002H120.36999999999999V23.28H115.112V31.024Q115.112 32.828 115.904 33.554Q116.696 34.28 117.94999999999999 34.28Q118.63199999999999 34.28 119.303 34.115Q119.97399999999999 33.95 120.54599999999999 33.62L121.47 39.274Q120.43599999999999 39.846 118.984 40.253Q117.532 40.66 115.904 40.66ZM103.53999999999999 23.28V17.560000000000002H108.556V23.28ZM125.782 40.0V17.560000000000002H132.998V40.0ZM129.39 14.238000000000003Q127.65199999999999 14.238000000000003 126.36499999999998 13.149000000000003Q125.07799999999999 12.060000000000002 125.07799999999999 10.212000000000003Q125.07799999999999 8.364 126.36499999999998 7.286Q127.65199999999999 6.207999999999998 129.39 6.207999999999998Q131.14999999999998 6.207999999999998 132.426 7.286Q133.702 8.364 133.702 10.212000000000003Q133.702 12.060000000000002 132.426 13.149000000000003Q131.14999999999998 14.238000000000003 129.39 14.238000000000003ZM139.004 40.0V17.560000000000002H146.22V20.332Q147.034 19.188000000000002 148.13400000000001 18.429000000000002Q149.234 17.67 150.488 17.285000000000004Q151.742 16.900000000000002 153.018 16.900000000000002Q155.482 16.900000000000002 157.27499999999998 18.011000000000003Q159.06799999999998 19.122 159.728 20.992Q161.048 18.858 163.26999999999998 17.879Q165.492 16.900000000000002 168.0 16.900000000000002Q171.256 16.900000000000002 173.12599999999998 18.143Q174.99599999999998 19.386000000000003 175.777 21.355000000000004Q176.558 23.324 176.558 25.524V40.0H169.34199999999998V27.592Q169.34199999999998 25.700000000000003 168.35199999999998 24.567Q167.362 23.434 165.47 23.434Q164.282 23.434 163.358 23.94Q162.434 24.446 161.917 25.293Q161.4 26.14 161.4 27.196V40.0H154.184V27.592Q154.184 25.700000000000003 153.183 24.567Q152.182 23.434 150.312 23.434Q149.102 23.434 148.178 23.94Q147.254 24.446 146.737 25.293Q146.22 26.14 146.22 27.196V40.0Z" fill="currentColor"/><path d="M188.50249999999997 40.0V30.9H190.19249999999997V38.453H194.05349999999999V40.0ZM196.80599999999998 40.0 200.29649999999998 30.9H202.18149999999997L205.74349999999998 40.0H203.83899999999997L203.0655 37.9395H199.40599999999998L198.65849999999998 40.0ZM199.82199999999997 36.503H202.63649999999998L201.20649999999998 32.811ZM209.19799999999998 40.0V30.9H212.4545Q213.78699999999998 30.9 214.60275 31.481749999999998Q215.4185 32.0635 215.4185 33.201Q215.4185 33.6235 215.2235 34.0005Q215.02849999999998 34.3775 214.7165 34.66025Q214.40449999999998 34.943 214.05349999999999 35.0925Q214.79449999999997 35.3265 215.27549999999997 35.931Q215.7565 36.5355 215.7565 37.4065Q215.7565 38.1735 215.36974999999998 38.7585Q214.98299999999998 39.3435 214.26799999999997 39.67175Q213.553 40.0 212.57799999999997 40.0ZM210.88799999999998 38.7065H212.3115Q213.16299999999998 38.7065 213.58549999999997 38.36525Q214.00799999999998 38.024 214.00799999999998 37.341499999999996Q214.00799999999998 36.672 213.58874999999998 36.314499999999995Q213.16949999999997 35.957 212.31799999999998 35.957H210.88799999999998ZM210.88799999999998 34.735H212.20749999999998Q212.682 34.735 213.033 34.579Q213.384 34.423 213.57899999999998 34.127250000000004Q213.77399999999997 33.8315 213.77399999999997 33.422Q213.77399999999997 32.824 213.36124999999998 32.50875Q212.9485 32.1935 212.18149999999997 32.1935H210.88799999999998ZM222.77949999999998 40.195Q221.8045 40.195 220.87824999999998 39.91225Q219.95199999999997 39.6295 219.31499999999997 39.103L220.134 37.8225Q220.44599999999997 38.1085 220.88149999999996 38.316500000000005Q221.31699999999998 38.5245 221.80775 38.63825Q222.2985 38.752 222.78599999999997 38.752Q223.59849999999997 38.752 224.10549999999998 38.44975Q224.61249999999998 38.1475 224.61249999999998 37.5755Q224.61249999999998 37.127 224.26149999999998 36.82475Q223.91049999999998 36.5225 222.968 36.256L222.08399999999997 36.0025Q220.75149999999996 35.6255 220.15675 34.99175Q219.56199999999998 34.358000000000004 219.56199999999998 33.435Q219.56199999999998 32.8305 219.80899999999997 32.33Q220.05599999999998 31.829500000000003 220.50775 31.465500000000002Q220.9595 31.1015 221.577 30.9065Q222.19449999999998 30.7115 222.92249999999999 30.7115Q223.878 30.7115 224.69699999999997 30.987750000000002Q225.51599999999996 31.264000000000003 226.03599999999997 31.738500000000002L225.1975 32.980000000000004Q224.92449999999997 32.7265 224.55399999999997 32.538Q224.18349999999998 32.3495 223.75449999999998 32.24875Q223.32549999999998 32.148 222.89 32.148Q222.37649999999996 32.148 221.99299999999997 32.291Q221.60949999999997 32.434 221.39499999999998 32.7005Q221.18049999999997 32.967 221.18049999999997 33.3505Q221.18049999999997 33.63 221.32674999999998 33.838Q221.47299999999998 34.046 221.83049999999997 34.21825Q222.188 34.3905 222.81849999999997 34.579L223.74149999999997 34.852000000000004Q225.04799999999997 35.2355 225.64599999999996 35.83675Q226.24399999999997 36.438 226.24399999999997 37.4Q226.24399999999997 38.2255 225.82799999999997 38.855999999999995Q225.41199999999998 39.4865 224.63524999999998 39.84075Q223.85849999999996 40.195 222.77949999999998 40.195Z" fill="currentColor"/></svg></a>
+    <nav class="main" aria-label="Main">
+      <a href="#modules" data-i="n1">Modullar</a>
+      <a href="#models" data-i="n2">Modellər</a>
+      <a href="#process" data-i="n3">Proses</a>
+      <a href="#faq" data-i="n4">Suallar</a>
+    </nav>
+    <div class="langs" role="group" aria-label="Language">
+      <button type="button" data-lang="az" aria-pressed="true">AZ</button>
+      <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <a class="btn btn-primary hcta" href="#contact" data-i="ncta">Audit istə</a>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow" data-i="h_eb">Rəqəmsal platformalar üçün gəlir modulları</div>
+        <h1 data-i="h1">Platformanız üçün yeni gəlir mənbəyi. Ən geci 5 həftəyə hazır.</h1>
+        <p class="lead" data-i="h_lead">Artim Labs mövcud platformalar üçün əlavə modullar qurur: qrup sifarişləri, ödənişli tariflər, B2B sifarişlər, ödənişli lidlər. Əsas məhsulunuza toxunmadan və komandanızı yayındırmadan, 2–5 həftəyə.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#contact"><span data-i="h_c1">Pulsuz modul auditi</span><span class="dock"></span></a>
+          <a class="btn btn-ghost" href="#models" data-i="h_c2">Əməkdaşlıq modelləri</a>
+        </div>
+        <div class="facts">
+          <div><b>2–5</b><span data-i="f1">həftəyə işə salınma</span></div>
+          <div><b>Demo</b><span data-i="f2">müqavilədən əvvəl</span></div>
+          <div><b>20%</b><span data-i="f3">yalnız moduldan gələn mənfəətdən</span></div>
+        </div>
+      </div>
+      <div class="diagram" aria-label="Example">
+        <div class="dg-platform">
+          <div class="dg-label" data-i="d_pl">Sizin platforma</div>
+          <div class="dg-rows"><i></i><i></i><i></i></div>
+          <div class="dg-module" data-i="d_mod">+ Qrup sifarişi modulu</div>
+        </div>
+        <div class="dg-calc">
+          <div><span data-i="d_r1">Ayda sifariş</span><span>100</span></div>
+          <div><span data-i="d_r2">Orta çek</span><span>200 ₼</span></div>
+          <div><span data-i="d_r3">Platformanın komissiyası</span><span>7%</span></div>
+          <div class="sum"><span data-i="d_r4">Yeni gəlir / ay</span><span>1 400 ₼</span></div>
+        </div>
+        <p class="dg-note" data-i="d_note">Nümunə hesablama. Proqnoz deyil: real rəqəmləri auditdə sizin məlumatlarınızla hesablayırıq.</p>
+      </div>
+    </div>
+  </div>
+
+  <section id="why">
+    <div class="wrap">
+      <div class="shead">
+        <div class="eyebrow" data-i="w_eb">Niyə əlavə modul</div>
+        <h2 data-i="w_h">Ən ucuz gəlir artıq sizə gələn istifadəçilərdədir</h2>
+      </div>
+      <div class="why">
+        <div><span class="k">CAC</span><h3 data-i="w1h">Yeni müştəri cəlb etmək bahadır</h3><p data-i="w1p">Mövcud istifadəçilərə yeni dəyər satmaq reklam büdcəsindən qat-qat ucuz başa gəlir.</p></div>
+        <div><span class="k">ROADMAP</span><h3 data-i="w2h">Komandanız əsas məhsulla məşğuldur</h3><p data-i="w2p">Modulu ayrıca qururuq və API ilə qoşuruq. Sizin inkişaf planınız dəyişmir.</p></div>
+        <div><span class="k">RISK</span><h3 data-i="w3h">Risk əvvəlcədən ölçülür</h3><p data-i="w3p">Əvvəlcə demo, sonra müqavilə. Partnyor modelində bizim gəlirimiz də nəticədən asılıdır.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="modules">
+    <div class="wrap">
+      <div class="shead">
+        <div class="eyebrow" data-i="m_eb">Modul kataloqu</div>
+        <h2 data-i="m_h">Hər modulun öz gəlir mexanizmi var</h2>
+        <p class="lead" data-i="m_lead">Bunlar tez işə düşən hazır ssenarilərdir. Hər biri sizin platformanın məntiqinə və dizaynına uyğunlaşdırılır.</p>
+      </div>
+      <div class="mods">
+        <div class="mod"><span class="sector" data-i="m1s">Restoran platformaları</span><h3 data-i="m1h">Qrup və banket sifarişləri</h3><p data-i="m1p">Qonaq sayı, büdcə və tarix üzrə hazır menyu paketləri. Restoran təsdiqləyir, platforma komissiya alır.</p><span class="money" data-i="m1m">Sifarişdən 5–10% komissiya</span></div>
+        <div class="mod"><span class="sector" data-i="m2s">Elan saytları</span><h3 data-i="m2h">Peşəkar satıcı paneli</h3><p data-i="m2p">Bütün müraciətlər, statuslar və xatırlatmalar bir paneldə. Mağazalara ayrıca ödənişli tarif kimi satılır.</p><span class="money" data-i="m2m">Aylıq abunə</span></div>
+        <div class="mod"><span class="sector" data-i="m3s">POS və SaaS</span><h3 data-i="m3h">B2B təkrar sifariş</h3><p data-i="m3p">Topdan alıcılar üçün fərdi kataloq və əvvəlki sifarişi bir kliklə təkrarlamaq imkanı.</p><span class="money" data-i="m3m">Əlavə tarif, 49–99 ₼/ay</span></div>
+        <div class="mod"><span class="sector" data-i="m4s">Restoran və ofislər</span><h3 data-i="m4h">Korporativ nahar</h3><p data-i="m4p">Ofis işçi sayını və büdcəni seçir, restoranlar hazır nahar dəstləri təklif edir.</p><span class="money" data-i="m4m">Qrup sifarişindən komissiya</span></div>
+        <div class="mod"><span class="sector" data-i="m5s">Marketpleys və xidmətlər</span><h3 data-i="m5h">Ödənişli lidlər</h3><p data-i="m5p">Alıcı sorğu yerləşdirir, satıcılar həmin sorğuya təklif göndərmək üçün ödəyir.</p><span class="money" data-i="m5m">Hər liddən ödəniş</span></div>
+        <div class="mod"><span class="sector" data-i="m6s">Hədiyyə, idman, xidmət</span><h3 data-i="m6h">Korporativ abunəliklər</h3><p data-i="m6p">Şirkətlər üçün təkrarlanan paketlər. Bir müqavilə, hər ay gələn sifariş.</p><span class="money" data-i="m6m">Abunə və paket satışı</span></div>
+      </div>
+      <p class="mods-note" data-i="m_note">Sizin platforma üçün hansı modulun uyğun olduğunu pulsuz auditdə müəyyən edirik.</p>
+    </div>
+  </section>
+
+  <section id="models">
+    <div class="wrap">
+      <div class="shead">
+        <div class="eyebrow" data-i="p_eb">Əməkdaşlıq modelləri</div>
+        <h2 data-i="p_h">Modulu birdəfəlik alın, ya da riski bizimlə bölüşün</h2>
+        <p class="lead" data-i="p_lead">Hansı modelin uyğun olduğunu auditdən sonra birlikdə seçirik. Hər iki halda həcm, müddət və qəbul meyarları müqavilədə yazılır.</p>
+      </div>
+      <div class="models">
+        <div class="model">
+          <h3 data-i="a_h">Sabit qiymət</h3>
+          <div class="price"><span data-i="a_p">$3 000-dan</span><small data-i="a_ps">Modul tam sizin olur</small></div>
+          <ul>
+            <li data-i="a1">Kod və bütün hüquqlar sizə keçir</li>
+            <li data-i="a2">Ödəniş mərhələlərlə: 40% / 40% / 20%</li>
+            <li data-i="a3">İşə salınmadan sonra 30 gün pulsuz dəstək</li>
+            <li data-i="a4">Sonrakı inkişaf ayrıca razılaşma ilə</li>
+          </ul>
+          <p class="fit" data-i="a_fit">Öz texniki komandası olan və modulu sonra özü inkişaf etdirmək istəyən platformalar üçün.</p>
+        </div>
+        <div class="model partner">
+          <span class="tag" data-i="b_tag">Risk bölüşülür</span>
+          <h3 data-i="b_h">Partnyor modeli</h3>
+          <div class="price"><span data-i="b_p">Kiçik start + 20%</span><small data-i="b_ps">Başlanğıc ödənişi sabit qiymətin təxminən 40%-i</small></div>
+          <ul>
+            <li data-i="b1">Başlanğıc xərci 2–2,5 dəfə aşağı</li>
+            <li data-i="b2">20% yalnız modulun xalis mənfəətindən</li>
+            <li data-i="b3">Dəstək, düzəlişlər və təkmilləşdirmə daxildir</li>
+            <li data-i="b4">Hər ay şəffaf gəlir hesabatı</li>
+            <li data-i="b5">24 ay müddət, istənilən vaxt modulu satın almaq hüququ</li>
+          </ul>
+          <p class="fit" data-i="b_fit">Tez başlamaq və nəticəyə görə ödəmək istəyən platformalar üçün.</p>
+        </div>
+      </div>
+      <div class="example">
+        <span class="lbl" data-i="e_l">Nümunə</span>
+        <span data-i="e1">Modul ayda <b>3 000 ₼</b> xalis mənfəət gətirir</span>
+        <span data-i="e2">Sizə: <b>2 400 ₼</b></span>
+        <span class="acc" data-i="e3">Artim Labs: <b>600 ₼</b></span>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="shead">
+        <div class="eyebrow" data-i="s_eb">Necə işləyirik</div>
+        <h2 data-i="s_h">Pul ödəməzdən əvvəl modulu görürsünüz</h2>
+      </div>
+      <ol class="steps">
+        <li><h3 data-i="s1h">Audit</h3><p data-i="s1p">Platformanı və auditoriyanı öyrənir, 2–3 modul ideyasını gəlir hesablaması ilə təqdim edirik.</p><span class="t" data-i="s1t">Pulsuz · 3 gün</span></li>
+        <li><h3 data-i="s2h">İnteraktiv demo</h3><p data-i="s2p">Seçilmiş modulun sizin interfeysdə necə görünəcəyini göstəririk.</p><span class="t" data-i="s2t">5 iş günü</span></li>
+        <li><h3 data-i="s3h">Müqavilə</h3><p data-i="s3p">Həcm, qəbul meyarları, inteqrasiyalar, kod hüquqları və ödəniş mərhələləri yazılı şəkildə.</p><span class="t" data-i="s3t">40% avans</span></li>
+        <li><h3 data-i="s4h">Hazırlama</h3><p data-i="s4p">Modulu ayrıca qurur, API ilə qoşur və sizin mühitdə test edirik.</p><span class="t" data-i="s4t">2–5 həftə</span></li>
+        <li><h3 data-i="s5h">İşə salma və artım</h3><p data-i="s5p">Qəbul, işə salma, ilk ayların göstəriciləri və təkmilləşdirmə.</p><span class="t" data-i="s5t">Partnyor modelində davamlı</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="promises">
+    <div class="wrap">
+      <div class="shead">
+        <div class="eyebrow" data-i="g_eb">Öhdəliklərimiz</div>
+        <h2 data-i="g_h">Biznesinizə ehtiyatla yanaşırıq</h2>
+      </div>
+      <div class="prom">
+        <div><h3 data-i="g1h">Məxfilik ilk görüşdən</h3><p data-i="g1p">Məlumatlarınız və ideyalarınız NDA ilə qorunur.</p></div>
+        <div><h3 data-i="g2h">Əsas sistemə toxunmuruq</h3><p data-i="g2p">Modul ayrıca xidmət kimi işləyir və istənilən vaxt söndürülə bilər.</p></div>
+        <div><h3 data-i="g3h">Qəbul meyarları yazılıdır</h3><p data-i="g3p">İşin nə vaxt hazır sayıldığı müqavilədə əvvəlcədən göstərilir.</p></div>
+        <div><h3 data-i="g4h">Şəffaf hesabat</h3><p data-i="g4p">Partnyor modelində gəlir və xərclər modulun öz panelində görünür.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="shead">
+        <div class="eyebrow" data-i="q_eb">Suallar</div>
+        <h2 data-i="q_h">Tez-tez verilən suallar</h2>
+      </div>
+      <div class="faq">
+        <details><summary data-i="q1">Kod kimə məxsusdur?</summary><p data-i="a1x">Sabit modeldə kod və hüquqlar tam ödənişdən sonra sizə keçir. Partnyor modelində modul sizin platformada işləyir, kod hüquqları isə müqavilə müddəti bitdikdə və ya modulu satın aldıqda sizə keçir.</p></details>
+        <details><summary data-i="q2">20% necə hesablanır?</summary><p data-i="a2x">Modulun gətirdiyi gəlirdən ödəniş komissiyaları və birbaşa xərclər çıxılır. Qalan xalis mənfəətin 20%-i hər ay hesabat əsasında ödənilir. Düstur müqavilədə yazılır.</p></details>
+        <details><summary data-i="q3">Modul gəlir gətirməsə nə olur?</summary><p data-i="a3x">Partnyor modelində siz yalnız kiçik başlanğıc ödənişini etmiş olursunuz, biz isə faizdən heç nə qazanmırıq. Buna görə hər ideyanı auditdə rəqəmlərlə yoxlayırıq.</p></details>
+        <details><summary data-i="q4">Bizim texnologiyamızla işləyəcəkmi?</summary><p data-i="a4x">Modul ayrıca veb-xidmət kimi qurulur və API, vidcet və ya ayrıca səhifə vasitəsilə qoşulur. Lazım olan girişlər auditdə razılaşdırılır.</p></details>
+        <details><summary data-i="q5">Nə qədər tez başlaya bilərik?</summary><p data-i="a5x">Audit 3 gün, demo 5 iş günü çəkir. Müqavilədən sonra ilk işləyən versiya adətən 2–3 həftəyə hazır olur.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap cgrid">
+      <div>
+        <div class="eyebrow" data-i="c_eb">Əlaqə</div>
+        <h2 style="margin:16px 0 18px" data-i="c_h">Platformanız üçün modul tapaq</h2>
+        <p class="lead" data-i="c_lead">Saytınızın ünvanını göndərin. 3 iş günü ərzində 2–3 modul ideyasını gəlir hesablaması ilə qaytaracağıq.</p>
+        <div class="direct">
+          <div class="row"><span class="lbl" data-i="c_mail">E-poçt</span><code id="mail">hello@artimlabs.com</code><button class="copy" type="button" data-copy="hello@artimlabs.com" data-i="c_copy">Kopyala</button></div>
+          <div class="row"><span class="lbl" data-i="c_city">Ofis</span><span data-i="c_cityv">Bakı, Azərbaycan</span></div>
+        </div>
+      </div>
+      <form id="lead" novalidate>
+        <label><span data-i="l1">Adınız</span><input id="f_name" name="name" required autocomplete="name"></label>
+        <label><span data-i="l2">Şirkət və ya platforma</span><input id="f_company" name="company" autocomplete="organization"></label>
+        <label><span data-i="l3">E-poçt və ya telefon</span><input id="f_contact" name="contact" required></label>
+        <label><span data-i="l4">Sayt</span><input id="f_site" name="site" placeholder="https://"></label>
+        <label class="full"><span data-i="l5">Nə barədə danışmaq istəyirsiniz?</span><textarea id="f_msg" name="msg"></textarea></label>
+        <button class="btn full" type="submit" data-i="l_btn">Audit istə</button>
+        <p class="fmsg full" id="fmsg" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap fbar">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -2 230.8 48" aria-hidden="true" xmlns:c2pa="http://c2pa.org/manifest"><metadata><c2pa:manifest>AAAWgmp1bWIAAAAeanVtZGMycGEAEQAQgAAAqgA4m3EDYzJwYQAAABZcanVtYgAAAEdqdW1kYzJtYQARABCAAACqADibcQN1cm46YzJwYTpmNTJiNzJkNy0zYTFmLTQ0ZTAtYWViOC0zODc2YzM5MDlkYjkAAAADl2p1bWIAAAApanVtZGMyYXMAEQAQgAAAqgA4m3EDYzJwYS5hc3NlcnRpb25zAAAAALxqdW1iAAAARGp1bWRjYm9yABEAEIAAAKoAOJtxE2MycGEuaW5ncmVkaWVudC52MwAAAAAYYzJzaC0DRKIzCoq6aRlmA4c3logAAABwY2JvcqNpZGM6Zm9ybWF0bWltYWdlL3N2Zyt4bWxqaW5zdGFuY2VJRHgseG1wOmlpZDo0NTE1ZDg0Yi1mZWYzLTRmZTAtOTFiMS03OTNkNWUzMjhlM2VscmVsYXRpb25zaGlwaHBhcmVudE9mAAAB4mp1bWIAAABBanVtZGNib3IAEQAQgAAAqgA4m3ETYzJwYS5hY3Rpb25zLnYyAAAAABhjMnNoXy11uWVdzImOoaFqp3HyxwAAAZljYm9yomdhY3Rpb25zgqJmYWN0aW9ua2MycGEub3BlbmVkanBhcmFtZXRlcnOha2luZ3JlZGllbnRzgaJjdXJseC1zZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmluZ3JlZGllbnQudjNkaGFzaFggLLIv04Gd7ZHPekZJMuzy77frw/uRA0aoV23n6mZWBa6kZmFjdGlvbngdY29tLmFudGhyb3BpYy5jbGF1ZGUucHJvdmlkZWRqcGFyYW1ldGVyc6F4H2NvbS5hbnRocm9waWMub3JpZ2luLWNvbmZpZGVuY2VndW5rbm93bmtkZXNjcmlwdGlvbnhmQ2xhdWRlIHByb3ZpZGVkIHRoaXMgZmlsZSBhdCB0aGUgcmVxdWVzdCBvZiBhIHVzZXIgYW5kIG1heSBoYXZlIGNyZWF0ZWQgb3IgbW9kaWZpZWQgdGhlIGZpbGUgY29udGVudHMubXNvZnR3YXJlQWdlbnShZG5hbWVmQ2xhdWRlcmFsbEFjdGlvbnNJbmNsdWRlZPUAAADIanVtYgAAAEBqdW1kY2JvcgARABCAAACqADibcRNjMnBhLmhhc2guZGF0YQAAAAAYYzJzaOgOGJ+mTzOqHqPYbmaHgWcAAACAY2JvcqVjYWxnZnNoYTI1NmNwYWRNAAAAAAAAAAAAAAAAAGRoYXNoWCAl7DgrzuTlhxazOoV75rFeUnz1AUghSxPqvN7T51pRJmRuYW1lbmp1bWJmIG1hbmlmZXN0amV4Y2x1c2lvbnOBomVzdGFydBi7Zmxlbmd0aBkeBAAAAj5qdW1iAAAAJ2p1bWRjMmNsABEAEIAAAKoAOJtxA2MycGEuY2xhaW0udjIAAAACD2Nib3KlY2FsZ2ZzaGEyNTZpc2lnbmF0dXJleE1zZWxmI2p1bWJmPS9jMnBhL3VybjpjMnBhOmY1MmI3MmQ3LTNhMWYtNDRlMC1hZWI4LTM4NzZjMzkwOWRiOS9jMnBhLnNpZ25hdHVyZWppbnN0YW5jZUlEeCx4bXA6aWlkOjYzNjAzYzBlLWE0OGMtNDY3ZS04ZTc5LWU3MWQ4ODYyNTBhNXJjcmVhdGVkX2Fzc2VydGlvbnODomN1cmx4LXNlbGYjanVtYmY9YzJwYS5hc3NlcnRpb25zL2MycGEuaW5ncmVkaWVudC52M2RoYXNoWCAssi/TgZ3tkc96Rkky7PLvt+vD+5EDRqhXbefqZlYFrqJjdXJseCpzZWxmI2p1bWJmPWMycGEuYXNzZXJ0aW9ucy9jMnBhLmFjdGlvbnMudjJkaGFzaFggHqxDZrlpTPDMotATRwWu/5MaO81u1n5A0ZXVlo4TjIWiY3VybHgpc2VsZiNqdW1iZj1jMnBhLmFzc2VydGlvbnMvYzJwYS5oYXNoLmRhdGFkaGFzaFgg3yVk3+5zyD06ktEpNDfwK9yOJ7EUhER5w/nZWQVbzBN0Y2xhaW1fZ2VuZXJhdG9yX2luZm+jZG5hbWVvQW50aHJvcGljIEZpbGVzZ3ZlcnNpb25lMS4wLjBrc3BlY1ZlcnNpb25lMi40LjAAABA4anVtYgAAAChqdW1kYzJjcwARABCAAACqADibcQNjMnBhLnNpZ25hdHVyZQAAABAIY2JvctKEWQISogEmGCFZAgowggIGMIIBjaADAgECAhRA5aAK7sI50L64g/oGQgU9Z1UTADAKBggqhkjOPQQDAzBJMRcwFQYDVQQKEw5BbnRocm9waWMsIFBCQzEuMCwGA1UEAxMlQW50aHJvcGljIENvbnRlbnQgQ3JlZGVudGlhbHMgUm9vdCBDQTAeFw0yNjA4MDcxODQzNTZaFw0yODA4MDYxOTQzNTZaMEQxFzAVBgNVBAoTDkFudGhyb3BpYywgUEJDMSkwJwYDVQQDEyBBbnRocm9waWMgQ2xhdWRlIENvbnRlbnQgU2lnbmluZzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABJh6CmvLUBgFFNU0vUKlOVtE6djd17L5SuwX0LemFisBM3dkd/3cyjxFA3Qo5S46fX0/ihY0VZ7mfb9KF703t5OjWDBWMA4GA1UdDwEB/wQEAwIHgDAVBgNVHSUEDjAMBgorBgEEAYPoXgIBMAwGA1UdEwEB/wQCMAAwHwYDVR0jBBgwFoAUzlHiBIFOZFsj+OPEz5o+nMHXXMIwCgYIKoZIzj0EAwMDZwAwZAIwMXMdFJ4BetLLVY7ORuE9noqbbAZOZn/aArXyTwFAZfKrPzxF2vPoJNf1+UCdg1XGAjBwX1zd9WGqYkqmL5SFqw1QySjr1zJfpJM9+1rdDwSPLMOPOjKuiXjoU/pUUeG9RwmhY3BhZFkNngAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPZYQFnMVSG7qA5fUW1j0P5uroV1BnP4cXJ2DcWyLXBqT6QqPJPw2geB8VbP4p+0KJYsdXhbaHvwLvjHO3b4i5o540g=</c2pa:manifest></metadata><rect x="0" y="12.0" width="28.0" height="28.0" rx="3.0" fill="currentColor"/><rect x="30.0" y="0" width="12.0" height="12.0" rx="2.25" style="fill:var(--accent)"/><path d="M67.306 40.66Q65.062 40.66 63.28 39.791Q61.498 38.922 60.464 37.305Q59.43 35.688 59.43 33.422Q59.43 31.486 60.387 29.990000000000002Q61.344 28.494 63.28 27.526Q65.216 26.558 68.15299999999999 26.217Q71.09 25.876 75.02799999999999 26.228L75.094 30.716Q73.004 30.342 71.321 30.331Q69.638 30.32 68.461 30.617Q67.28399999999999 30.914 66.64599999999999 31.53Q66.008 32.146 66.008 33.048Q66.008 34.214 66.899 34.83Q67.78999999999999 35.446 69.286 35.446Q70.584 35.446 71.629 34.983999999999995Q72.674 34.522 73.301 33.631Q73.928 32.74 73.928 31.442V26.316000000000003Q73.928 25.106 73.422 24.182000000000002Q72.916 23.258000000000003 71.827 22.741Q70.738 22.224 68.934 22.224Q67.196 22.224 65.47999999999999 22.741Q63.763999999999996 23.258000000000003 62.4 24.292L60.552 19.342000000000002Q62.73 17.978 65.216 17.329Q67.702 16.68 70.1 16.68Q73.268 16.68 75.67699999999999 17.692Q78.086 18.704 79.44999999999999 20.816000000000003Q80.814 22.928 80.814 26.228V40.0H74.588V37.624Q73.51 39.076 71.618 39.867999999999995Q69.726 40.66 67.306 40.66ZM86.512 40.0V17.560000000000002H93.728V20.178Q94.74 18.44 96.41199999999999 17.648000000000003Q98.08399999999999 16.856 100.042 16.856Q100.78999999999999 16.856 101.38399999999999 16.944000000000003Q101.978 17.032 102.55 17.142000000000003L101.692 24.556Q100.94399999999999 24.292 100.10799999999999 24.127000000000002Q99.27199999999999 23.962 98.43599999999999 23.962Q96.39 23.962 95.059 25.139000000000003Q93.728 26.316000000000003 93.728 28.582V40.0ZM115.904 40.66Q112.16399999999999 40.66 110.02999999999999 38.559Q107.89599999999999 36.458 107.89599999999999 32.278V11.136000000000003H115.112V17.560000000000002H120.36999999999999V23.28H115.112V31.024Q115.112 32.828 115.904 33.554Q116.696 34.28 117.94999999999999 34.28Q118.63199999999999 34.28 119.303 34.115Q119.97399999999999 33.95 120.54599999999999 33.62L121.47 39.274Q120.43599999999999 39.846 118.984 40.253Q117.532 40.66 115.904 40.66ZM103.53999999999999 23.28V17.560000000000002H108.556V23.28ZM125.782 40.0V17.560000000000002H132.998V40.0ZM129.39 14.238000000000003Q127.65199999999999 14.238000000000003 126.36499999999998 13.149000000000003Q125.07799999999999 12.060000000000002 125.07799999999999 10.212000000000003Q125.07799999999999 8.364 126.36499999999998 7.286Q127.65199999999999 6.207999999999998 129.39 6.207999999999998Q131.14999999999998 6.207999999999998 132.426 7.286Q133.702 8.364 133.702 10.212000000000003Q133.702 12.060000000000002 132.426 13.149000000000003Q131.14999999999998 14.238000000000003 129.39 14.238000000000003ZM139.004 40.0V17.560000000000002H146.22V20.332Q147.034 19.188000000000002 148.13400000000001 18.429000000000002Q149.234 17.67 150.488 17.285000000000004Q151.742 16.900000000000002 153.018 16.900000000000002Q155.482 16.900000000000002 157.27499999999998 18.011000000000003Q159.06799999999998 19.122 159.728 20.992Q161.048 18.858 163.26999999999998 17.879Q165.492 16.900000000000002 168.0 16.900000000000002Q171.256 16.900000000000002 173.12599999999998 18.143Q174.99599999999998 19.386000000000003 175.777 21.355000000000004Q176.558 23.324 176.558 25.524V40.0H169.34199999999998V27.592Q169.34199999999998 25.700000000000003 168.35199999999998 24.567Q167.362 23.434 165.47 23.434Q164.282 23.434 163.358 23.94Q162.434 24.446 161.917 25.293Q161.4 26.14 161.4 27.196V40.0H154.184V27.592Q154.184 25.700000000000003 153.183 24.567Q152.182 23.434 150.312 23.434Q149.102 23.434 148.178 23.94Q147.254 24.446 146.737 25.293Q146.22 26.14 146.22 27.196V40.0Z" fill="currentColor"/><path d="M188.50249999999997 40.0V30.9H190.19249999999997V38.453H194.05349999999999V40.0ZM196.80599999999998 40.0 200.29649999999998 30.9H202.18149999999997L205.74349999999998 40.0H203.83899999999997L203.0655 37.9395H199.40599999999998L198.65849999999998 40.0ZM199.82199999999997 36.503H202.63649999999998L201.20649999999998 32.811ZM209.19799999999998 40.0V30.9H212.4545Q213.78699999999998 30.9 214.60275 31.481749999999998Q215.4185 32.0635 215.4185 33.201Q215.4185 33.6235 215.2235 34.0005Q215.02849999999998 34.3775 214.7165 34.66025Q214.40449999999998 34.943 214.05349999999999 35.0925Q214.79449999999997 35.3265 215.27549999999997 35.931Q215.7565 36.5355 215.7565 37.4065Q215.7565 38.1735 215.36974999999998 38.7585Q214.98299999999998 39.3435 214.26799999999997 39.67175Q213.553 40.0 212.57799999999997 40.0ZM210.88799999999998 38.7065H212.3115Q213.16299999999998 38.7065 213.58549999999997 38.36525Q214.00799999999998 38.024 214.00799999999998 37.341499999999996Q214.00799999999998 36.672 213.58874999999998 36.314499999999995Q213.16949999999997 35.957 212.31799999999998 35.957H210.88799999999998ZM210.88799999999998 34.735H212.20749999999998Q212.682 34.735 213.033 34.579Q213.384 34.423 213.57899999999998 34.127250000000004Q213.77399999999997 33.8315 213.77399999999997 33.422Q213.77399999999997 32.824 213.36124999999998 32.50875Q212.9485 32.1935 212.18149999999997 32.1935H210.88799999999998ZM222.77949999999998 40.195Q221.8045 40.195 220.87824999999998 39.91225Q219.95199999999997 39.6295 219.31499999999997 39.103L220.134 37.8225Q220.44599999999997 38.1085 220.88149999999996 38.316500000000005Q221.31699999999998 38.5245 221.80775 38.63825Q222.2985 38.752 222.78599999999997 38.752Q223.59849999999997 38.752 224.10549999999998 38.44975Q224.61249999999998 38.1475 224.61249999999998 37.5755Q224.61249999999998 37.127 224.26149999999998 36.82475Q223.91049999999998 36.5225 222.968 36.256L222.08399999999997 36.0025Q220.75149999999996 35.6255 220.15675 34.99175Q219.56199999999998 34.358000000000004 219.56199999999998 33.435Q219.56199999999998 32.8305 219.80899999999997 32.33Q220.05599999999998 31.829500000000003 220.50775 31.465500000000002Q220.9595 31.1015 221.577 30.9065Q222.19449999999998 30.7115 222.92249999999999 30.7115Q223.878 30.7115 224.69699999999997 30.987750000000002Q225.51599999999996 31.264000000000003 226.03599999999997 31.738500000000002L225.1975 32.980000000000004Q224.92449999999997 32.7265 224.55399999999997 32.538Q224.18349999999998 32.3495 223.75449999999998 32.24875Q223.32549999999998 32.148 222.89 32.148Q222.37649999999996 32.148 221.99299999999997 32.291Q221.60949999999997 32.434 221.39499999999998 32.7005Q221.18049999999997 32.967 221.18049999999997 33.3505Q221.18049999999997 33.63 221.32674999999998 33.838Q221.47299999999998 34.046 221.83049999999997 34.21825Q222.188 34.3905 222.81849999999997 34.579L223.74149999999997 34.852000000000004Q225.04799999999997 35.2355 225.64599999999996 35.83675Q226.24399999999997 36.438 226.24399999999997 37.4Q226.24399999999997 38.2255 225.82799999999997 38.855999999999995Q225.41199999999998 39.4865 224.63524999999998 39.84075Q223.85849999999996 40.195 222.77949999999998 40.195Z" fill="currentColor"/></svg>
+    <span data-i="ft">© 2026 Artim Labs · Bakı · Rəqəmsal platformalar üçün gəlir modulları</span>
+  </div>
+</footer>
+
+<script>
+const I18N={
+ru:{n1:"Модули",n2:"Модели",n3:"Процесс",n4:"Вопросы",ncta:"Запросить аудит",
+h_eb:"Модули дохода для цифровых платформ",
+h1:"Новый источник дохода для вашей платформы. Готов максимум за 5 недель.",
+h_lead:"Artim Labs строит дополнительные модули для действующих платформ: групповые заказы, платные тарифы, B2B-заказы, платные лиды. Без вмешательства в ядро продукта и без отвлечения вашей команды, за 2–5 недель.",
+h_c1:"Бесплатный аудит модулей",h_c2:"Модели сотрудничества",
+f1:"недель до запуска",f2:"до подписания договора",f3:"только с прибыли модуля",
+d_pl:"Ваша платформа",d_mod:"+ Модуль групповых заказов",d_r1:"Заказов в месяц",d_r2:"Средний чек",d_r3:"Комиссия платформы",d_r4:"Новый доход / мес",
+d_note:"Пример расчёта, не прогноз. Реальные цифры считаем на аудите по вашим данным.",
+w_eb:"Зачем дополнительный модуль",w_h:"Самый дешёвый доход уже лежит в вашей текущей аудитории",
+w1h:"Новые клиенты стоят дорого",w1p:"Продать новую ценность текущим пользователям в разы дешевле, чем покупать трафик.",
+w2h:"Ваша команда занята ядром продукта",w2p:"Мы строим модуль отдельно и подключаем через API. Ваш план разработки не меняется.",
+w3h:"Риск измерим заранее",w3p:"Сначала демо, потом договор. В партнёрской модели наш доход тоже зависит от результата.",
+m_eb:"Каталог модулей",m_h:"У каждого модуля свой механизм дохода",m_lead:"Это готовые сценарии, которые быстро запускаются. Каждый адаптируем под логику и дизайн вашей платформы.",
+m1s:"Ресторанные платформы",m1h:"Групповые и банкетные заказы",m1p:"Готовые пакеты меню по числу гостей, бюджету и дате. Ресторан подтверждает, платформа получает комиссию.",m1m:"Комиссия 5–10% с заказа",
+m2s:"Сайты объявлений",m2h:"Панель профессионального продавца",m2p:"Все обращения, статусы и напоминания в одной панели. Продаётся магазинам как отдельный платный тариф.",m2m:"Ежемесячная подписка",
+m3s:"POS и SaaS",m3h:"B2B-повторные заказы",m3p:"Персональный каталог для оптовых клиентов и повтор прошлого заказа в один клик.",m3m:"Доп. тариф 49–99 ₼/мес",
+m4s:"Рестораны и офисы",m4h:"Корпоративные обеды",m4p:"Офис выбирает число сотрудников и бюджет, рестораны предлагают готовые обеденные наборы.",m4m:"Комиссия с группового заказа",
+m5s:"Маркетплейсы и услуги",m5h:"Платные лиды",m5p:"Покупатель публикует запрос, продавцы платят за возможность отправить ему предложение.",m5m:"Оплата за каждый лид",
+m6s:"Подарки, спорт, услуги",m6h:"Корпоративные подписки",m6p:"Повторяющиеся пакеты для компаний. Один договор, заказы каждый месяц.",m6m:"Подписки и продажа пакетов",
+m_note:"Какой модуль подходит вашей платформе, определяем на бесплатном аудите.",
+p_eb:"Модели сотрудничества",p_h:"Купите модуль один раз или разделите риск с нами",p_lead:"Модель выбираем вместе после аудита. В обоих случаях объём, сроки и критерии приёмки фиксируются в договоре.",
+a_h:"Фиксированная цена",a_p:"от $3 000",a_ps:"Модуль полностью ваш",a1:"Код и все права переходят вам",a2:"Оплата по этапам: 40% / 40% / 20%",a3:"30 дней бесплатной поддержки после запуска",a4:"Дальнейшее развитие по отдельному соглашению",a_fit:"Для платформ со своей техкомандой, которые хотят развивать модуль сами.",
+b_tag:"Риск делим пополам",b_h:"Партнёрская модель",b_p:"Небольшой старт + 20%",b_ps:"Стартовый платёж около 40% от фиксированной цены",b1:"Стартовые затраты в 2–2,5 раза ниже",b2:"20% только с чистой прибыли модуля",b3:"Поддержка, правки и доработки включены",b4:"Прозрачный отчёт о доходе каждый месяц",b5:"Срок 24 месяца, право выкупить модуль в любой момент",b_fit:"Для платформ, которые хотят быстро стартовать и платить за результат.",
+e_l:"Пример",e1:"Модуль приносит <b>3 000 ₼</b> чистой прибыли в месяц",e2:"Вам: <b>2 400 ₼</b>",e3:"Artim Labs: <b>600 ₼</b>",
+s_eb:"Как мы работаем",s_h:"Вы видите модуль до того, как платите",
+s1h:"Аудит",s1p:"Изучаем платформу и аудиторию, предлагаем 2–3 идеи модулей с расчётом дохода.",s1t:"Бесплатно · 3 дня",
+s2h:"Интерактивное демо",s2p:"Показываем, как выбранный модуль будет выглядеть в вашем интерфейсе.",s2t:"5 рабочих дней",
+s3h:"Договор",s3p:"Объём, критерии приёмки, интеграции, права на код и этапы оплаты письменно.",s3t:"Аванс 40%",
+s4h:"Разработка",s4p:"Строим модуль отдельно, подключаем через API и тестируем в вашей среде.",s4t:"2–5 недель",
+s5h:"Запуск и рост",s5p:"Приёмка, запуск, метрики первых месяцев и доработки.",s5t:"В партнёрской модели постоянно",
+g_eb:"Наши обязательства",g_h:"Бережно относимся к вашему бизнесу",
+g1h:"Конфиденциальность с первой встречи",g1p:"Ваши данные и идеи защищены NDA.",
+g2h:"Не трогаем ядро системы",g2p:"Модуль работает как отдельный сервис и отключается в любой момент.",
+g3h:"Критерии приёмки письменно",g3p:"Когда работа считается готовой, указано в договоре заранее.",
+g4h:"Прозрачная отчётность",g4p:"В партнёрской модели доходы и расходы видны в панели самого модуля.",
+q_eb:"Вопросы",q_h:"Частые вопросы",
+q1:"Кому принадлежит код?",a1x:"В фиксированной модели код и права переходят вам после полной оплаты. В партнёрской модели модуль работает на вашей платформе, а права на код переходят вам по окончании срока договора или при выкупе.",
+q2:"Как считаются 20%?",a2x:"Из дохода модуля вычитаются платёжные комиссии и прямые расходы. 20% от оставшейся чистой прибыли выплачиваются ежемесячно по отчёту. Формула прописывается в договоре.",
+q3:"Что если модуль не принесёт дохода?",a3x:"В партнёрской модели вы заплатили только небольшой стартовый платёж, а мы ничего не заработали на проценте. Поэтому каждую идею проверяем цифрами ещё на аудите.",
+q4:"Будет ли это работать с нашей технологией?",a4x:"Модуль строится как отдельный веб-сервис и подключается через API, виджет или отдельную страницу. Нужные доступы согласуем на аудите.",
+q5:"Как быстро можно начать?",a5x:"Аудит занимает 3 дня, демо 5 рабочих дней. После договора первая рабочая версия обычно готова за 2–3 недели.",
+c_eb:"Контакты",c_h:"Найдём модуль для вашей платформы",c_lead:"Пришлите адрес вашего сайта. За 3 рабочих дня вернёмся с 2–3 идеями модулей и расчётом дохода.",
+c_mail:"Почта",c_copy:"Копировать",c_city:"Офис",c_cityv:"Баку, Азербайджан",
+l1:"Ваше имя",l2:"Компания или платформа",l3:"Почта или телефон",l4:"Сайт",l5:"О чём хотите поговорить?",l_btn:"Запросить аудит",
+ft:"© 2026 Artim Labs · Баку · Модули дохода для цифровых платформ"},
+en:{n1:"Modules",n2:"Models",n3:"Process",n4:"FAQ",ncta:"Request an audit",
+h_eb:"Revenue modules for digital platforms",
+h1:"A new revenue stream for your platform. Live within 5 weeks.",
+h_lead:"Artim Labs builds add-on modules for live platforms: group orders, paid tiers, B2B ordering, paid leads. No changes to your core product and no distraction for your team, shipped in 2–5 weeks.",
+h_c1:"Free module audit",h_c2:"Partnership models",
+f1:"weeks to launch",f2:"before any contract",f3:"only from module profit",
+d_pl:"Your platform",d_mod:"+ Group orders module",d_r1:"Orders per month",d_r2:"Average order",d_r3:"Platform commission",d_r4:"New revenue / month",
+d_note:"Illustrative calculation, not a forecast. We run the real numbers on your data during the audit.",
+w_eb:"Why an add-on module",w_h:"Your cheapest revenue is already inside your current audience",
+w1h:"New customers are expensive",w1p:"Selling new value to existing users costs a fraction of paid acquisition.",
+w2h:"Your team is busy with the core",w2p:"We build the module separately and connect it via API. Your roadmap stays intact.",
+w3h:"Risk is measured upfront",w3p:"Demo first, contract second. In the partner model our income depends on the result too.",
+m_eb:"Module catalogue",m_h:"Every module comes with its own revenue mechanism",m_lead:"These are proven scenarios that launch fast. Each one is adapted to your platform's logic and design.",
+m1s:"Restaurant platforms",m1h:"Group and banquet orders",m1p:"Set menus by party size, budget and date. The restaurant confirms, the platform earns a commission.",m1m:"5–10% commission per order",
+m2s:"Classifieds",m2h:"Pro seller dashboard",m2p:"All enquiries, statuses and reminders in one place. Sold to shops as a separate paid tier.",m2m:"Monthly subscription",
+m3s:"POS and SaaS",m3h:"B2B reorder",m3p:"A personal catalogue for wholesale buyers and one-click repeat of the last order.",m3m:"Add-on tier, 49–99 ₼/month",
+m4s:"Restaurants and offices",m4h:"Corporate lunch",m4p:"An office sets headcount and budget, restaurants offer ready lunch sets.",m4m:"Commission on group orders",
+m5s:"Marketplaces and services",m5h:"Paid leads",m5p:"A buyer posts a request, sellers pay to send an offer.",m5m:"Pay per lead",
+m6s:"Gifts, fitness, services",m6h:"Corporate subscriptions",m6p:"Recurring packages for companies. One contract, orders every month.",m6m:"Subscriptions and packages",
+m_note:"We identify which module fits your platform during a free audit.",
+p_eb:"Partnership models",p_h:"Buy the module outright, or share the risk with us",p_lead:"We choose the model together after the audit. Either way, scope, timeline and acceptance criteria are fixed in the contract.",
+a_h:"Fixed price",a_p:"from $3,000",a_ps:"The module is fully yours",a1:"Code and all rights transfer to you",a2:"Staged payment: 40% / 40% / 20%",a3:"30 days of free support after launch",a4:"Further development under a separate agreement",a_fit:"For platforms with their own tech team that want to evolve the module in-house.",
+b_tag:"Shared risk",b_h:"Partner model",b_p:"Small upfront + 20%",b_ps:"Upfront fee of roughly 40% of the fixed price",b1:"2–2.5× lower upfront cost",b2:"20% only of the module's net profit",b3:"Support, fixes and improvements included",b4:"Transparent revenue report every month",b5:"24-month term with a buyout option at any time",b_fit:"For platforms that want to start fast and pay for results.",
+e_l:"Example",e1:"The module earns <b>3,000 ₼</b> net profit per month",e2:"You keep: <b>2,400 ₼</b>",e3:"Artim Labs: <b>600 ₼</b>",
+s_eb:"How we work",s_h:"You see the module before you pay",
+s1h:"Audit",s1p:"We study your platform and audience and propose 2–3 module ideas with revenue estimates.",s1t:"Free · 3 days",
+s2h:"Interactive demo",s2p:"We show how the chosen module will look inside your interface.",s2t:"5 working days",
+s3h:"Contract",s3p:"Scope, acceptance criteria, integrations, code rights and payment stages in writing.",s3t:"40% advance",
+s4h:"Build",s4p:"We build the module separately, connect it via API and test it in your environment.",s4t:"2–5 weeks",
+s5h:"Launch and growth",s5p:"Acceptance, launch, first-month metrics and improvements.",s5t:"Ongoing in the partner model",
+g_eb:"Our commitments",g_h:"We handle your business with care",
+g1h:"Confidential from the first call",g1p:"Your data and ideas are covered by an NDA.",
+g2h:"We don't touch your core",g2p:"The module runs as a separate service and can be switched off at any time.",
+g3h:"Written acceptance criteria",g3p:"When the work counts as done is agreed in the contract upfront.",
+g4h:"Transparent reporting",g4p:"In the partner model, revenue and costs are visible in the module's own dashboard.",
+q_eb:"FAQ",q_h:"Frequently asked questions",
+q1:"Who owns the code?",a1x:"In the fixed-price model, code and rights transfer to you after full payment. In the partner model the module runs on your platform, and code rights transfer to you at the end of the term or on buyout.",
+q2:"How is the 20% calculated?",a2x:"Payment fees and direct costs are deducted from the module's revenue. 20% of the remaining net profit is paid monthly against a report. The formula is written into the contract.",
+q3:"What if the module earns nothing?",a3x:"In the partner model you have only paid a small upfront fee, and we have earned nothing from the share. That is why we test every idea with numbers during the audit.",
+q4:"Will it work with our tech stack?",a4x:"The module is built as a separate web service and connects via API, a widget or a standalone page. Required access is agreed during the audit.",
+q5:"How fast can we start?",a5x:"The audit takes 3 days and the demo 5 working days. After signing, the first working version is usually ready in 2–3 weeks.",
+c_eb:"Contact",c_h:"Let's find a module for your platform",c_lead:"Send us your website. Within 3 working days we'll come back with 2–3 module ideas and revenue estimates.",
+c_mail:"Email",c_copy:"Copy",c_city:"Office",c_cityv:"Baku, Azerbaijan",
+l1:"Your name",l2:"Company or platform",l3:"Email or phone",l4:"Website",l5:"What would you like to discuss?",l_btn:"Request an audit",
+ft:"© 2026 Artim Labs · Baku · Revenue modules for digital platforms"}
+};
+const FORM_MSG={az:{ok:"Təşəkkürlər! Poçt proqramınız açılmayıbsa, məlumatları hello@artimlabs.com ünvanına göndərin.",err:"Adınızı və əlaqə məlumatınızı yazın."},
+ru:{ok:"Спасибо! Если почтовая программа не открылась, отправьте данные на hello@artimlabs.com.",err:"Укажите имя и контакт для связи."},
+en:{ok:"Thank you! If your email app didn't open, send the details to hello@artimlabs.com.",err:"Please add your name and a contact."}};
+const AZ={};let LANG="az";
+document.querySelectorAll("[data-i]").forEach(el=>AZ[el.dataset.i]=el.innerHTML);
+function setLang(l){
+  LANG=I18N[l]||l==="az"?l:"az";
+  document.querySelectorAll("[data-i]").forEach(el=>{const k=el.dataset.i;el.innerHTML=(LANG==="az"?AZ[k]:I18N[LANG][k])??AZ[k]});
+  document.documentElement.lang=LANG;
+  document.querySelectorAll(".langs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===LANG));
+  document.getElementById("fmsg").textContent="";
+  try{localStorage.setItem("artim-lang",LANG)}catch(e){}
+}
+document.querySelectorAll(".langs button").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.lang)));
+let saved=null;try{saved=localStorage.getItem("artim-lang")}catch(e){}
+if(saved&&saved!=="az")setLang(saved);
+document.querySelectorAll("[data-copy]").forEach(b=>b.addEventListener("click",()=>{
+  const v=b.dataset.copy,done=()=>{const t=b.textContent;b.textContent="✓";setTimeout(()=>b.textContent=t,1200)};
+  try{navigator.clipboard.writeText(v).then(done,()=>selectMail())}catch(e){selectMail()}
+}));
+function selectMail(){const r=document.createRange();r.selectNodeContents(document.getElementById("mail"));const s=getSelection();s.removeAllRanges();s.addRange(r)}
+document.getElementById("lead").addEventListener("submit",e=>{
+  e.preventDefault();const f=e.target,m=document.getElementById("fmsg");
+  const v=id=>document.getElementById(id).value.trim();
+  if(!v('f_name')||!v('f_contact')){m.textContent=FORM_MSG[LANG].err;return}
+  const body=`Name: ${v('f_name')}\nCompany: ${v('f_company')}\nContact: ${v('f_contact')}\nSite: ${v('f_site')}\n\n${v('f_msg')}`;
+  m.textContent=FORM_MSG[LANG].ok;
+  const a=document.createElement("a");a.href="mailto:hello@artimlabs.com?subject="+encodeURIComponent("Audit: "+(v('f_company')||v('f_name')))+"&body="+encodeURIComponent(body);
+  try{a.click()}catch(err){}
+});
+</script>
+
+</body>
+</html>
