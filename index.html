@@ -215,6 +215,10 @@ footer a:hover{color:#FFF1E2}
 .fab svg{width:30px;height:30px;color:#fff}
 
 /* league site mock */
+.hr-note{margin-top:22px;padding:18px 20px;border-radius:16px;background:var(--wine);color:#F6E6D3;border:1px solid var(--gold)}
+.hr-note b{display:block;color:var(--gold-2);font-size:1.02rem;margin-bottom:4px}
+.hr-note p{font-size:.96rem}
+
 .site-sec{background:linear-gradient(180deg,var(--peach),var(--cream))}
 .feat{list-style:none;padding:0;margin:28px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .feat li{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;gap:12px;align-items:center;font-weight:500}
@@ -369,7 +373,7 @@ table.rt{width:calc(100% - 36px);margin:10px 18px 20px;border-collapse:collapse;
       <p class="lead"><span class="az">Format, iştirakçı sayı və oyun günləri hər şirkət üçün fərdi hazırlanır.</span><span class="ru">Формат, число участников и игровых дней рассчитываем индивидуально для каждой компании.</span></p>
     </div>
     <div class="steps">
-      <div class="step"><h3><span class="az">Hazırlıq</span><span class="ru">Подготовка</span></h3><p><span class="az">HR ilə birlikdə: iştirakçı siyahısı, ləqəblər, oyunçu kartları və favoritlər üçün səsvermə.</span><span class="ru">Вместе с HR: список участников, прозвища, карточки игроков и голосование за фаворитов.</span></p></div>
+      <div class="step"><h3><span class="az">Hazırlıq</span><span class="ru">Подготовка</span></h3><p><span class="az">HR liqanın başladığını elan edir və linki paylaşır. Əməkdaşlar saytda özləri qeydiyyatdan keçir, biz oyunçu kartlarını və favoritlər üçün səsverməni hazırlayırıq.</span><span class="ru">HR объявляет о старте лиги и делится ссылкой. Сотрудники сами регистрируются на сайте, мы готовим карточки игроков и голосование за фаворитов.</span></p></div>
       <div class="step"><h3><span class="az">Qrup mərhələsi</span><span class="ru">Групповой этап</span></h3><p><span class="az">Qruplarda hər kəs hər kəslə oynayır. Bir axın oynayır, digəri azarkeşlik edir.</span><span class="ru">В группах каждый играет с каждым. Один поток играет, другой болеет.</span></p></div>
       <div class="step"><h3><span class="az">Pley-off</span><span class="ru">Плей-офф</span></h3><p><span class="az">Qrup qalibləri və ən yaxşı ikinci yerlər həlledici görüşlərdə qarşılaşır.</span><span class="ru">Победители групп и лучшие вторые места встречаются в решающих матчах.</span></p></div>
       <div class="step"><h3><span class="az">Final və mükafat</span><span class="ru">Финал и награждение</span></h3><p><span class="az">Kubok, nominasiyalar, ümumi foto və Sezon 2-nin elanı.</span><span class="ru">Кубок, номинации, общее фото и анонс Сезона 2.</span></p></div>
@@ -421,7 +425,7 @@ table.rt{width:calc(100% - 36px);margin:10px 18px 20px;border-collapse:collapse;
         <li><span class="az">Turnirin hazırlanması və keçirilməsi, aparıcı və şou proqramı</span><span class="ru">Подготовка и проведение турнира, ведущий и шоу-программа</span></li>
         <li><span class="az">Hakimlik və yazılı reqlament</span><span class="ru">Судейство и письменный регламент</span></li>
         <li><span class="az">Foto və video çəkiliş — kanallarınız üçün hazır kontent</span><span class="ru">Фото- и видеосъёмка: готовый контент для ваших каналов</span></li>
-        <li><span class="az">Liqanın fərdi saytı: tarixlər, ünvanlar, onlayn reytinq və statistika</span><span class="ru">Индивидуальный сайт лиги: даты, адреса, онлайн-рейтинг и статистика</span></li>
+        <li><span class="az">Liqanın brendli saytı: qeydiyyat, tarixlər, ünvanlar, onlayn reytinq və statistika</span><span class="ru">Брендированный сайт лиги: регистрация, даты, адреса, онлайн-рейтинг и статистика</span></li>
         <li><span class="az">Rekvizit: taxtalar, zərlər, bey, kuboklar, brendinq</span><span class="ru">Реквизит: доски, кубики, бейджи, кубки, брендинг</span></li>
         <li><span class="az">Məkan fərdi seçilir</span><span class="ru">Помещение подбирается индивидуально</span></li>
       </ul>
@@ -435,20 +439,26 @@ table.rt{width:calc(100% - 36px);margin:10px 18px 20px;border-collapse:collapse;
   <div class="wrap split">
     <div>
       <p class="eyebrow"><span class="az">Hər müştəriyə</span><span class="ru">Для каждого клиента</span></p>
-      <h2><span class="az">Liqanızın öz saytı</span><span class="ru">Собственный сайт вашей лиги</span></h2>
+      <h2><span class="az">Liqanızın brendli saytı</span><span class="ru">Брендированный сайт вашей лиги</span></h2>
       <div class="orn short" aria-hidden="true"></div>
-      <p class="lead"><span class="az">Hər müştəri üçün fərdi sayt yaradırıq — liqanın bütün məlumatı bir linkdə. Əməkdaşlar telefondan nəticələri izləyir, favoritlərə səs verir və növbəti oyunu gözləyir.</span><span class="ru">Для каждого клиента создаём индивидуальный сайт — вся информация о лиге по одной ссылке. Сотрудники следят за результатами с телефона, голосуют за фаворитов и ждут следующей игры.</span></p>
+      <p class="lead"><span class="az">Hər şirkət üçün öz brendi ilə fərdi sayt hazırlayırıq — liqanın bütün məlumatı bir linkdə. İstəyən əməkdaşlar orada özləri qeydiyyatdan keçir, nəticələri telefondan izləyir və favoritlərə səs verir.</span><span class="ru">Для каждой компании готовим индивидуальный сайт в её фирменном стиле — вся информация о лиге по одной ссылке. Желающие сотрудники сами регистрируются на нём, следят за результатами с телефона и голосуют за фаворитов.</span></p>
       <ul class="feat">
+        <li><svg><use href="#i-people"/></svg><span><span class="az">Onlayn qeydiyyat</span><span class="ru">Онлайн-регистрация</span></span></li>
         <li><svg><use href="#i-trophy"/></svg><span><span class="az">Liqa və turnir haqqında</span><span class="ru">О лиге и турнире</span></span></li>
         <li><svg><use href="#i-cal"/></svg><span><span class="az">Tarixlər və cədvəl</span><span class="ru">Даты и расписание</span></span></li>
         <li><svg><use href="#i-pin"/></svg><span><span class="az">Ünvanlar və məkan</span><span class="ru">Адреса и площадки</span></span></li>
         <li><svg><use href="#i-chart"/></svg><span><span class="az">Oyunçuların reytinqi</span><span class="ru">Рейтинг игроков</span></span></li>
+        <li><svg><use href="#i-star"/></svg><span><span class="az">Favoritlərə səsvermə</span><span class="ru">Голосование за фаворитов</span></span></li>
       </ul>
+      <div class="hr-note">
+        <b><span class="az">HR üçün — cəmi bir addım</span><span class="ru">От HR — всего один шаг</span></b>
+        <p><span class="az">Əməkdaşlara liqanın başladığını elan edin və saytın linkini paylaşın. Qeydiyyatdan mükafatlandırmaya qədər qalan hər şeyi biz edirik.</span><span class="ru">Объявите сотрудникам о старте лиги и поделитесь ссылкой на сайт. Всё остальное — от регистрации до награждения — мы делаем сами.</span></p>
+      </div>
     </div>
     <div class="browser" aria-hidden="true">
       <div class="bar"><i></i><i></i><i></i><span>sirket.artimlabs.com</span></div>
       <div class="lg-head"><img src="assets/img/nerd-logo.png" alt=""><div><b>[Şirkət] Nərd Liqası</b><small>Sezon 1</small></div></div>
-      <div class="lg-tabs"><span><span class="az">Liqa</span><span class="ru">Лига</span></span><span><span class="az">Təqvim</span><span class="ru">Даты</span></span><span><span class="az">Ünvan</span><span class="ru">Адрес</span></span><span class="on"><span class="az">Reytinq</span><span class="ru">Рейтинг</span></span></div>
+      <div class="lg-tabs"><span><span class="az">Qeydiyyat</span><span class="ru">Регистрация</span></span><span><span class="az">Təqvim</span><span class="ru">Даты</span></span><span><span class="az">Ünvan</span><span class="ru">Адрес</span></span><span class="on"><span class="az">Reytinq</span><span class="ru">Рейтинг</span></span></div>
       <div class="lg-info">
         <div><span class="az">Növbəti oyun</span><span class="ru">Следующая игра</span><b><span class="az">Pley-off · Cümə, 18:00</span><span class="ru">Плей-офф · пятница, 18:00</span></b></div>
         <div><span class="az">Məkan</span><span class="ru">Площадка</span><b><span class="az">Bakı · Mərkəzi zal</span><span class="ru">Баку · центральный зал</span></b></div>
@@ -474,7 +484,7 @@ table.rt{width:calc(100% - 36px);margin:10px 18px 20px;border-collapse:collapse;
     <div class="benefits">
       <div class="benefit"><svg><use href="#i-trophy"/></svg><div><h3><span class="az">Firma çempionatı</span><span class="ru">Фирменный чемпионат</span></h3><p><span class="az">Şirkətinizin adı ilə: «[Şirkət] Nərd Liqası — Sezon 1».</span><span class="ru">Под именем вашей компании: «[Компания] Nərd Liqası — Sezon 1».</span></p></div></div>
       <div class="benefit"><svg><use href="#i-cam"/></svg><div><h3><span class="az">Kommunikasiya üçün kontent</span><span class="ru">Контент для коммуникаций</span></h3><p><span class="az">Foto, video, müsahibələr və əməkdaş hekayələri.</span><span class="ru">Фото, видео, интервью и истории сотрудников.</span></p></div></div>
-      <div class="benefit"><svg><use href="#i-screen"/></svg><div><h3><span class="az">Liqanın saytı</span><span class="ru">Сайт лиги</span></h3><p><span class="az">Şirkətiniz üçün fərdi sayt: reytinqlər, nəticələr və nailiyyətlər.</span><span class="ru">Индивидуальный сайт для вашей компании: рейтинги, результаты и достижения.</span></p></div></div>
+      <div class="benefit"><svg><use href="#i-screen"/></svg><div><h3><span class="az">Liqanın saytı</span><span class="ru">Сайт лиги</span></h3><p><span class="az">Şirkətinizin brendi ilə sayt: qeydiyyat, reytinqlər və nəticələr.</span><span class="ru">Сайт в фирменном стиле вашей компании: регистрация, рейтинги и результаты.</span></p></div></div>
       <div class="benefit"><svg><use href="#i-cal"/></svg><div><h3><span class="az">Yeni ənənə</span><span class="ru">Новая традиция</span></h3><p><span class="az">«Revanş bileti» və növbəti mövsüm üçün səbəb.</span><span class="ru">«Revanş bileti» и повод для следующего сезона.</span></p></div></div>
     </div>
   </div>
