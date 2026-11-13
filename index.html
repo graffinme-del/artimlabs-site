@@ -112,7 +112,8 @@ header.scrolled{border-bottom-color:var(--line)}
 .media img{width:100%;height:100%;object-fit:cover}
 .split>div:not(.media){grid-column:1;position:relative;z-index:1}
 .split.rev>div:not(.media){grid-column:2}
-@media (max-width:860px){.bleed{display:block;min-height:0}.split,.split.rev{grid-template-columns:1fr}.split>div:not(.media),.split.rev>div:not(.media){grid-column:1}.media,.split.rev .media{position:relative;inset:auto;width:auto;height:340px;margin:0 -20px;order:2;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%,#000 75%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 30%,#000 75%,transparent 100%)}}
+.split>div.browser{grid-column:2;grid-row:1}
+@media (max-width:860px){.bleed{display:block;min-height:0}.split,.split.rev{grid-template-columns:1fr}.split>div:not(.media),.split.rev>div:not(.media),.split>.browser{grid-column:1}.media,.split.rev .media{position:relative;inset:auto;width:auto;height:340px;margin:0 -20px;order:2;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%,#000 75%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 30%,#000 75%,transparent 100%)}}
 
 .icons{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
 .icons.two{grid-template-columns:repeat(2,1fr)}
@@ -212,6 +213,33 @@ footer a{text-decoration:none}
 footer a:hover{color:#FFF1E2}
 .fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:60;width:58px;height:58px;border-radius:50%;background:#25D366;display:grid;place-items:center;box-shadow:0 10px 24px -8px rgba(0,0,0,.45)}
 .fab svg{width:30px;height:30px;color:#fff}
+
+/* league site mock */
+.site-sec{background:linear-gradient(180deg,var(--peach),var(--cream))}
+.feat{list-style:none;padding:0;margin:28px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.feat li{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;gap:12px;align-items:center;font-weight:500}
+.feat svg{width:30px;height:30px;color:var(--copper);flex:none}
+@media (max-width:520px){.feat{grid-template-columns:1fr}}
+.browser{background:#fff;border-radius:18px;box-shadow:0 40px 80px -30px rgba(58,14,22,.55),0 0 0 1px var(--line);overflow:hidden}
+.bar{display:flex;align-items:center;gap:7px;padding:12px 14px;background:#F4E6D8;border-bottom:1px solid var(--line)}
+.bar i{width:10px;height:10px;border-radius:50%;background:#DCC3AE}
+.bar span{margin-left:10px;flex:1;background:#fff;border-radius:8px;padding:4px 12px;font-size:.8rem;color:var(--muted)}
+.lg-head{background:radial-gradient(120% 140% at 90% 0,#7E1E2E,#3A0E16);color:#FFF1E2;padding:22px 24px;display:flex;align-items:center;gap:14px}
+.lg-head img{width:46px;height:auto}
+.lg-head b{font:700 1.25rem var(--serif);display:block}
+.lg-head small{color:var(--gold-2);font-size:.82rem}
+.lg-tabs{display:flex;gap:6px;padding:12px 18px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.lg-tabs>span{font-size:.8rem;font-weight:600;padding:6px 12px;border-radius:999px;color:var(--muted);background:var(--cream)}
+.lg-tabs>span.on{background:var(--wine);color:#FFF1E2}
+.lg-info{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px 18px 4px}
+.lg-info div{background:var(--cream);border-radius:12px;padding:10px 12px;font-size:.82rem;color:var(--muted)}
+.lg-info b{display:block;color:var(--deep);font-size:.92rem}
+table.rt{width:calc(100% - 36px);margin:10px 18px 20px;border-collapse:collapse;font-size:.88rem}
+.rt th{text-align:left;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--copper);padding:8px 6px;border-bottom:1px solid var(--line)}
+.rt td{padding:9px 6px;border-bottom:1px solid #F1E3D5}
+.rt td:first-child{font:700 1rem var(--serif);color:var(--wine);width:34px}
+.rt td.n{text-align:right;font-weight:600}
+.rt tr.top td{background:#FFF6E8}
 </style>
 </head>
 <body id="top">
@@ -233,6 +261,8 @@ footer a:hover{color:#FFF1E2}
     <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h3l2 5-2.5 1.5a11 11 0 0 0 7 7L16 14l5 2v3a2 2 0 0 1-2 2A17 17 0 0 1 3 5a2 2 0 0 1 2-2z"/></symbol>
     <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6.5 8.5-6.5"/></symbol>
     <symbol id="i-wa" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.1 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 43s14-13 14-24a14 14 0 0 0-28 0c0 11 14 24 14 24z"/><circle cx="24" cy="19" r="5"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="24" r="18"/><path d="M6 24h36M24 6c5 5 7 11 7 18s-2 13-7 18c-5-5-7-11-7-18s2-13 7-18z"/></symbol>
   </defs>
 </svg>
 
@@ -246,6 +276,7 @@ footer a:hover{color:#FFF1E2}
       <a href="#faydalar"><span class="az">Faydalar</span><span class="ru">Выгоды</span></a>
       <a href="#liqa"><span class="az">Liqa necə keçir</span><span class="ru">Как проходит</span></a>
       <a href="#formatlar"><span class="az">Formatlar</span><span class="ru">Форматы</span></a>
+      <a href="#sayt"><span class="az">Liqa saytı</span><span class="ru">Сайт лиги</span></a>
       <a href="#elaqe"><span class="az">Əlaqə</span><span class="ru">Контакты</span></a>
     </nav>
     <div class="lang" role="group" aria-label="Dil / Язык">
@@ -287,7 +318,7 @@ footer a:hover{color:#FFF1E2}
       <p class="eyebrow"><span class="az">Qədim Şərq oyunu</span><span class="ru">Древняя восточная игра</span></p>
       <h2><span class="az">Nərd — Azərbaycanın mədəni kodunun bir hissəsidir</span><span class="ru">Нарды — часть культурного кода Азербайджана</span></h2>
       <div class="orn short" aria-hidden="true"></div>
-      <p class="lead"><span class="az">Bakının həyətlərində, çayxanalarda və ailə süfrələrində nərd taxtası həmişə insanları bir araya gətirib. Biz bu ənənəni ofisə gətiririk.</span><span class="ru">Во дворах Баку, в чайханах и за семейным столом нарды всегда собирали людей вместе. Мы приносим эту традицию в офис.</span></p>
+      <p class="lead"><span class="az">Bakının həyətlərində, çayxanalarda və ailə süfrələrində nərd taxtası həmişə insanları bir araya gətirib. Biz bu ənənəni korporativ mədəniyyətinizə gətiririk.</span><span class="ru">Во дворах Баку, в чайханах и за семейным столом нарды всегда собирали людей вместе. Мы приносим эту традицию в корпоративную культуру вашей компании.</span></p>
       <div class="icons">
         <div class="ic"><svg><use href="#i-hourglass"/></svg><h3><span class="az">Min illik tarix</span><span class="ru">Тысячелетняя история</span></h3><p><span class="az">Strategiya və şansı birləşdirən qədim Şərq oyunu.</span><span class="ru">Древняя восточная игра, где стратегия встречается с удачей.</span></p></div>
         <div class="ic"><svg><use href="#i-people"/></svg><h3><span class="az">Ünsiyyət və hörmət</span><span class="ru">Общение и уважение</span></h3><p><span class="az">Ünsiyyət, hörmət və etimad simvolu.</span><span class="ru">Символ общения, уважения и доверия.</span></p></div>
@@ -390,12 +421,48 @@ footer a:hover{color:#FFF1E2}
         <li><span class="az">Turnirin hazırlanması və keçirilməsi, aparıcı və şou proqramı</span><span class="ru">Подготовка и проведение турнира, ведущий и шоу-программа</span></li>
         <li><span class="az">Hakimlik və yazılı reqlament</span><span class="ru">Судейство и письменный регламент</span></li>
         <li><span class="az">Foto və video çəkiliş — kanallarınız üçün hazır kontent</span><span class="ru">Фото- и видеосъёмка: готовый контент для ваших каналов</span></li>
-        <li><span class="az">Onlayn reytinq və statistika</span><span class="ru">Онлайн-рейтинг и статистика</span></li>
+        <li><span class="az">Liqanın fərdi saytı: tarixlər, ünvanlar, onlayn reytinq və statistika</span><span class="ru">Индивидуальный сайт лиги: даты, адреса, онлайн-рейтинг и статистика</span></li>
         <li><span class="az">Rekvizit: taxtalar, zərlər, bey, kuboklar, brendinq</span><span class="ru">Реквизит: доски, кубики, бейджи, кубки, брендинг</span></li>
-        <li><span class="az">Məkan fərdi seçilir — ofisinizdə və ya xüsusi zalda</span><span class="ru">Площадка подбирается индивидуально — у вас в офисе или в отдельном зале</span></li>
+        <li><span class="az">Məkan fərdi seçilir</span><span class="ru">Помещение подбирается индивидуально</span></li>
       </ul>
     </div>
     <div class="media"><img src="assets/img/flags.jpg" width="660" height="1080" alt="Nərd Corporate League bayraqları" loading="lazy"></div>
+  </div>
+</section>
+
+<!-- LEAGUE SITE -->
+<section class="site-sec" id="sayt">
+  <div class="wrap split">
+    <div>
+      <p class="eyebrow"><span class="az">Hər müştəriyə</span><span class="ru">Для каждого клиента</span></p>
+      <h2><span class="az">Liqanızın öz saytı</span><span class="ru">Собственный сайт вашей лиги</span></h2>
+      <div class="orn short" aria-hidden="true"></div>
+      <p class="lead"><span class="az">Hər müştəri üçün fərdi sayt yaradırıq — liqanın bütün məlumatı bir linkdə. Əməkdaşlar telefondan nəticələri izləyir, favoritlərə səs verir və növbəti oyunu gözləyir.</span><span class="ru">Для каждого клиента создаём индивидуальный сайт — вся информация о лиге по одной ссылке. Сотрудники следят за результатами с телефона, голосуют за фаворитов и ждут следующей игры.</span></p>
+      <ul class="feat">
+        <li><svg><use href="#i-trophy"/></svg><span><span class="az">Liqa və turnir haqqında</span><span class="ru">О лиге и турнире</span></span></li>
+        <li><svg><use href="#i-cal"/></svg><span><span class="az">Tarixlər və cədvəl</span><span class="ru">Даты и расписание</span></span></li>
+        <li><svg><use href="#i-pin"/></svg><span><span class="az">Ünvanlar və məkan</span><span class="ru">Адреса и площадки</span></span></li>
+        <li><svg><use href="#i-chart"/></svg><span><span class="az">Oyunçuların reytinqi</span><span class="ru">Рейтинг игроков</span></span></li>
+      </ul>
+    </div>
+    <div class="browser" aria-hidden="true">
+      <div class="bar"><i></i><i></i><i></i><span>sirket.artimlabs.com</span></div>
+      <div class="lg-head"><img src="assets/img/nerd-logo.png" alt=""><div><b>[Şirkət] Nərd Liqası</b><small>Sezon 1</small></div></div>
+      <div class="lg-tabs"><span><span class="az">Liqa</span><span class="ru">Лига</span></span><span><span class="az">Təqvim</span><span class="ru">Даты</span></span><span><span class="az">Ünvan</span><span class="ru">Адрес</span></span><span class="on"><span class="az">Reytinq</span><span class="ru">Рейтинг</span></span></div>
+      <div class="lg-info">
+        <div><span class="az">Növbəti oyun</span><span class="ru">Следующая игра</span><b><span class="az">Pley-off · Cümə, 18:00</span><span class="ru">Плей-офф · пятница, 18:00</span></b></div>
+        <div><span class="az">Məkan</span><span class="ru">Площадка</span><b><span class="az">Bakı · Mərkəzi zal</span><span class="ru">Баку · центральный зал</span></b></div>
+      </div>
+      <table class="rt">
+        <thead><tr><th>#</th><th><span class="az">Oyunçu</span><span class="ru">Игрок</span></th><th><span class="az">Qələbə</span><span class="ru">Победы</span></th><th>Mars</th><th class="n"><span class="az">Xal</span><span class="ru">Очки</span></th></tr></thead>
+        <tbody>
+          <tr class="top"><td>1</td><td>«Dəmir Əsəb»</td><td>3</td><td>2</td><td class="n">5</td></tr>
+          <tr><td>2</td><td>«Qoşa Şeş»</td><td>3</td><td>1</td><td class="n">4</td></tr>
+          <tr><td>3</td><td>«Professor»</td><td>2</td><td>1</td><td class="n">3</td></tr>
+          <tr><td>4</td><td>«Sakit Usta»</td><td>2</td><td>0</td><td class="n">2</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -407,7 +474,7 @@ footer a:hover{color:#FFF1E2}
     <div class="benefits">
       <div class="benefit"><svg><use href="#i-trophy"/></svg><div><h3><span class="az">Firma çempionatı</span><span class="ru">Фирменный чемпионат</span></h3><p><span class="az">Şirkətinizin adı ilə: «[Şirkət] Nərd Liqası — Sezon 1».</span><span class="ru">Под именем вашей компании: «[Компания] Nərd Liqası — Sezon 1».</span></p></div></div>
       <div class="benefit"><svg><use href="#i-cam"/></svg><div><h3><span class="az">Kommunikasiya üçün kontent</span><span class="ru">Контент для коммуникаций</span></h3><p><span class="az">Foto, video, müsahibələr və əməkdaş hekayələri.</span><span class="ru">Фото, видео, интервью и истории сотрудников.</span></p></div></div>
-      <div class="benefit"><svg><use href="#i-screen"/></svg><div><h3><span class="az">Rəqəmsal liqa</span><span class="ru">Цифровая лига</span></h3><p><span class="az">Reytinqlər, nəticələr və nailiyyətlər bir yerdə.</span><span class="ru">Рейтинги, результаты и достижения в одном месте.</span></p></div></div>
+      <div class="benefit"><svg><use href="#i-screen"/></svg><div><h3><span class="az">Liqanın saytı</span><span class="ru">Сайт лиги</span></h3><p><span class="az">Şirkətiniz üçün fərdi sayt: reytinqlər, nəticələr və nailiyyətlər.</span><span class="ru">Индивидуальный сайт для вашей компании: рейтинги, результаты и достижения.</span></p></div></div>
       <div class="benefit"><svg><use href="#i-cal"/></svg><div><h3><span class="az">Yeni ənənə</span><span class="ru">Новая традиция</span></h3><p><span class="az">«Revanş bileti» və növbəti mövsüm üçün səbəb.</span><span class="ru">«Revanş bileti» и повод для следующего сезона.</span></p></div></div>
     </div>
   </div>
@@ -422,7 +489,7 @@ footer a:hover{color:#FFF1E2}
     <div class="faq">
       <details><summary><span class="az">Nərdi yaxşı oynamayanlar da qatıla bilər?</span><span class="ru">Можно участвовать, если играю не очень?</span></summary><p><span class="az">Bəli. Uzun nərd oynayırıq, qaydalar sadədir və aparıcı başlanğıcda hamısını izah edir. Qruplarda püşk təsadüfidir — sürprizlər həmişə olur.</span><span class="ru">Да. Играем в длинные нарды, правила простые, ведущий объясняет их в начале. Жеребьёвка случайная — сенсации бывают всегда.</span></p></details>
       <details><summary><span class="az">Neçə nəfər iştirak edə bilər?</span><span class="ru">Сколько человек может участвовать?</span></summary><p><span class="az">Format iştirakçı sayına görə qurulur — kiçik komandadan böyük şirkətə qədər. İştirak etməyənlər azarkeş kimi qoşulur.</span><span class="ru">Формат строится под число участников — от небольшой команды до крупной компании. Остальные присоединяются как болельщики.</span></p></details>
-      <details><summary><span class="az">Tədbir harada keçirilir?</span><span class="ru">Где проходит турнир?</span></summary><p><span class="az">Ofisinizdə və ya birlikdə seçdiyimiz məkanda. Lazım olsa, çayxana atmosferi ilə zal təşkil edirik.</span><span class="ru">У вас в офисе или на площадке, которую подберём вместе. При желании — зал в атмосфере чайханы.</span></p></details>
+      <details><summary><span class="az">Tədbir harada keçirilir?</span><span class="ru">Где проходит турнир?</span></summary><p><span class="az">Məkan hər turnir üçün fərdi seçilir.</span><span class="ru">Помещение подбирается индивидуально под каждый турнир.</span></p></details>
       <details><summary><span class="az">Nə qədər vaxt aparır?</span><span class="ru">Сколько это длится?</span></summary><p><span class="az">Müddət formatdan və iştirakçı sayından asılıdır — hər liqanın təqvimini fərdi hesablayırıq.</span><span class="ru">Зависит от формата и числа участников — календарь каждой лиги рассчитываем индивидуально.</span></p></details>
       <details><summary><span class="az">Rəhbərlik iştirak edə bilər?</span><span class="ru">Может ли участвовать руководство?</span></summary><p><span class="az">Əlbəttə. «Rəhbəri məğlub et» oyunu şounun ən sevilən anlarından biridir.</span><span class="ru">Конечно. Партия «Rəhbəri məğlub et» — один из самых любимых моментов шоу.</span></p></details>
       <details><summary><span class="az">Qiymət nə qədərdir?</span><span class="ru">Сколько это стоит?</span></summary><p><span class="az">Qiymət iştirakçı sayından və formatdan asılıdır. Sorğu göndərin — sizə kommersiya təklifi hazırlayaq.</span><span class="ru">Зависит от числа участников и формата. Оставьте заявку — подготовим коммерческое предложение.</span></p></details>
