@@ -85,7 +85,7 @@ header.scrolled{border-bottom-color:var(--line)}
 .tagline{margin:22px 0 30px;font-size:1.15rem;font-weight:500;color:var(--deep)}
 .hero p.sub{font-size:1.1rem;color:var(--muted);max-width:520px;margin-bottom:30px}
 .cta{display:flex;flex-wrap:wrap;gap:12px}
-.hero{position:relative}.hero-img{position:absolute;top:0;right:0;bottom:0;width:50vw}
+.hero{position:relative;border-bottom:3px solid var(--gold)}.hero-img{position:absolute;top:0;right:0;bottom:0;width:50vw}
 .hero-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:40% 60%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%);mask-image:linear-gradient(90deg,transparent 0,#000 30%)}
 .hero-arc{position:absolute;left:-360px;top:50%;transform:translateY(-50%);width:520px;height:520px;border-radius:50%;border:26px solid transparent;background:repeating-conic-gradient(from 0deg,#7A1D2B 0 6deg,#B7864A 6deg 8deg) border-box;-webkit-mask:linear-gradient(#000 0 0) padding-box exclude,linear-gradient(#000 0 0);mask:linear-gradient(#000 0 0) padding-box exclude,linear-gradient(#000 0 0);opacity:.85;pointer-events:none}
 @media (max-width:860px){
@@ -105,10 +105,14 @@ header.scrolled{border-bottom-color:var(--line)}
 /* split sections */
 .split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(32px,5vw,72px);align-items:center}
 .split.rev{grid-template-columns:.95fr 1.05fr}
-.split.rev .media{order:-1}
-.media{border-radius:28px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(58,14,22,.55);aspect-ratio:4/4.4}
+.bleed{overflow:hidden;min-height:min(92vh,820px);display:flex;align-items:center}
+.bleed>.wrap{width:100%}
+.media{position:absolute;top:0;bottom:0;right:0;width:52vw;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 38%);mask-image:linear-gradient(90deg,transparent 0,#000 38%)}
+.split.rev .media{right:auto;left:0;-webkit-mask-image:linear-gradient(270deg,transparent 0,#000 38%);mask-image:linear-gradient(270deg,transparent 0,#000 38%)}
 .media img{width:100%;height:100%;object-fit:cover}
-@media (max-width:860px){.split,.split.rev{grid-template-columns:1fr}.split.rev .media{order:0}.media{aspect-ratio:16/11}}
+.split>div:not(.media){grid-column:1;position:relative;z-index:1}
+.split.rev>div:not(.media){grid-column:2}
+@media (max-width:860px){.bleed{display:block;min-height:0}.split,.split.rev{grid-template-columns:1fr}.split>div:not(.media),.split.rev>div:not(.media){grid-column:1}.media,.split.rev .media{position:relative;inset:auto;width:auto;height:340px;margin:0 -20px;order:2;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%,#000 75%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 30%,#000 75%,transparent 100%)}}
 
 .icons{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
 .icons.two{grid-template-columns:repeat(2,1fr)}
@@ -276,18 +280,8 @@ footer a:hover{color:#FFF1E2}
   </div>
 </section>
 
-<div class="stats">
-  <div class="wrap">
-    <div class="stat"><b>40</b><span class="az">iştirakçı</span><span class="ru">участников</span></div>
-    <div class="stat"><b>10</b><span class="az">nərd taxtası</span><span class="ru">досок для нард</span></div>
-    <div class="stat"><b>2</b><span class="az">oyun günü</span><span class="ru">игровых дня</span></div>
-    <div class="stat"><b>1</b><span class="az">çempion və kubok</span><span class="ru">чемпион и кубок</span></div>
-    <p class="note"><span class="az">Nümunə format. İştirakçı sayı və günlər şirkətinizə uyğun qurulur — 100 nəfərə qədər.</span><span class="ru">Пример формата. Число участников и дней подбираем под вашу компанию — до 100 человек.</span></p>
-  </div>
-</div>
-
 <!-- CULTURE -->
-<section id="niye">
+<section id="niye" class="bleed">
   <div class="wrap split">
     <div>
       <p class="eyebrow"><span class="az">Qədim Şərq oyunu</span><span class="ru">Древняя восточная игра</span></p>
@@ -305,7 +299,7 @@ footer a:hover{color:#FFF1E2}
 </section>
 
 <!-- VALUE -->
-<section id="faydalar" style="padding-top:0">
+<section id="faydalar" class="bleed">
   <div class="wrap split rev">
     <div>
       <p class="eyebrow"><span class="az">Şirkət üçün dəyər</span><span class="ru">Ценность для компании</span></p>
@@ -341,13 +335,13 @@ footer a:hover{color:#FFF1E2}
     <div class="center">
       <p class="eyebrow"><span class="az">Mərhələlər</span><span class="ru">Этапы</span></p>
       <h2><span class="az">Liqa necə keçir</span><span class="ru">Как проходит лига</span></h2>
-      <p class="lead"><span class="az">Nümunə: 40 iştirakçı, 10 taxta və iki oyun günü.</span><span class="ru">Пример: 40 участников, 10 досок и два игровых дня.</span></p>
+      <p class="lead"><span class="az">Format, iştirakçı sayı və oyun günləri hər şirkət üçün fərdi hazırlanır.</span><span class="ru">Формат, число участников и игровых дней рассчитываем индивидуально для каждой компании.</span></p>
     </div>
     <div class="steps">
       <div class="step"><h3><span class="az">Hazırlıq</span><span class="ru">Подготовка</span></h3><p><span class="az">HR ilə birlikdə: iştirakçı siyahısı, ləqəblər, oyunçu kartları və favoritlər üçün səsvermə.</span><span class="ru">Вместе с HR: список участников, прозвища, карточки игроков и голосование за фаворитов.</span></p></div>
-      <div class="step"><h3><span class="az">Qrup mərhələsi</span><span class="ru">Групповой этап</span></h3><p><span class="az">10 qrup, hərəsində 4 nəfər, hər kəs hər kəslə. Bir axın oynayır, digəri azarkeşlik edir.</span><span class="ru">10 групп по 4 человека, каждый с каждым. Один поток играет, другой болеет.</span></p><small><span class="az">1-ci gün · ~4 saat</span><span class="ru">День 1 · ~4 часа</span></small></div>
-      <div class="step"><h3><span class="az">Pley-off</span><span class="ru">Плей-офф</span></h3><p><span class="az">Qrup qalibləri və ən yaxşı ikinci yerlər — 16 oyunçu. Görüşlər 3 xala qədər.</span><span class="ru">Победители групп и лучшие вторые места — 16 игроков. Матчи до 3 очков.</span></p><small><span class="az">2-ci gün</span><span class="ru">День 2</span></small></div>
-      <div class="step"><h3><span class="az">Final və mükafat</span><span class="ru">Финал и награждение</span></h3><p><span class="az">Kubok, nominasiyalar, ümumi foto və Sezon 2-nin elanı.</span><span class="ru">Кубок, номинации, общее фото и анонс Сезона 2.</span></p><small><span class="az">2-ci gün · axşam</span><span class="ru">День 2 · вечер</span></small></div>
+      <div class="step"><h3><span class="az">Qrup mərhələsi</span><span class="ru">Групповой этап</span></h3><p><span class="az">Qruplarda hər kəs hər kəslə oynayır. Bir axın oynayır, digəri azarkeşlik edir.</span><span class="ru">В группах каждый играет с каждым. Один поток играет, другой болеет.</span></p></div>
+      <div class="step"><h3><span class="az">Pley-off</span><span class="ru">Плей-офф</span></h3><p><span class="az">Qrup qalibləri və ən yaxşı ikinci yerlər həlledici görüşlərdə qarşılaşır.</span><span class="ru">Победители групп и лучшие вторые места встречаются в решающих матчах.</span></p></div>
+      <div class="step"><h3><span class="az">Final və mükafat</span><span class="ru">Финал и награждение</span></h3><p><span class="az">Kubok, nominasiyalar, ümumi foto və Sezon 2-nin elanı.</span><span class="ru">Кубок, номинации, общее фото и анонс Сезона 2.</span></p></div>
     </div>
   </div>
 </section>
@@ -387,7 +381,7 @@ footer a:hover{color:#FFF1E2}
 </section>
 
 <!-- TURNKEY -->
-<section style="padding-top:0">
+<section class="bleed">
   <div class="wrap split">
     <div>
       <p class="eyebrow"><span class="az">Biz edirik — siz oynayırsınız</span><span class="ru">Мы делаем — вы играете</span></p>
@@ -427,9 +421,9 @@ footer a:hover{color:#FFF1E2}
     </div>
     <div class="faq">
       <details><summary><span class="az">Nərdi yaxşı oynamayanlar da qatıla bilər?</span><span class="ru">Можно участвовать, если играю не очень?</span></summary><p><span class="az">Bəli. Uzun nərd oynayırıq, qaydalar sadədir və aparıcı başlanğıcda hamısını izah edir. Qruplarda püşk təsadüfidir — sürprizlər həmişə olur.</span><span class="ru">Да. Играем в длинные нарды, правила простые, ведущий объясняет их в начале. Жеребьёвка случайная — сенсации бывают всегда.</span></p></details>
-      <details><summary><span class="az">Neçə nəfər iştirak edə bilər?</span><span class="ru">Сколько человек может участвовать?</span></summary><p><span class="az">Format iştirakçı sayına görə qurulur — 100 nəfərə qədər. İştirak etməyənlər azarkeş kimi qoşulur.</span><span class="ru">Формат строится под число участников — до 100 человек. Остальные присоединяются как болельщики.</span></p></details>
+      <details><summary><span class="az">Neçə nəfər iştirak edə bilər?</span><span class="ru">Сколько человек может участвовать?</span></summary><p><span class="az">Format iştirakçı sayına görə qurulur — kiçik komandadan böyük şirkətə qədər. İştirak etməyənlər azarkeş kimi qoşulur.</span><span class="ru">Формат строится под число участников — от небольшой команды до крупной компании. Остальные присоединяются как болельщики.</span></p></details>
       <details><summary><span class="az">Tədbir harada keçirilir?</span><span class="ru">Где проходит турнир?</span></summary><p><span class="az">Ofisinizdə və ya birlikdə seçdiyimiz məkanda. Lazım olsa, çayxana atmosferi ilə zal təşkil edirik.</span><span class="ru">У вас в офисе или на площадке, которую подберём вместе. При желании — зал в атмосфере чайханы.</span></p></details>
-      <details><summary><span class="az">Nə qədər vaxt aparır?</span><span class="ru">Сколько это длится?</span></summary><p><span class="az">Adətən iki oyun günü: qrup mərhələsi (təxminən 4 saat) və pley-off ilə final. Daha böyük liqalar üçün dörd günə qədər.</span><span class="ru">Обычно два игровых дня: групповой этап (около 4 часов) и плей-офф с финалом. Для больших лиг — до четырёх дней.</span></p></details>
+      <details><summary><span class="az">Nə qədər vaxt aparır?</span><span class="ru">Сколько это длится?</span></summary><p><span class="az">Müddət formatdan və iştirakçı sayından asılıdır — hər liqanın təqvimini fərdi hesablayırıq.</span><span class="ru">Зависит от формата и числа участников — календарь каждой лиги рассчитываем индивидуально.</span></p></details>
       <details><summary><span class="az">Rəhbərlik iştirak edə bilər?</span><span class="ru">Может ли участвовать руководство?</span></summary><p><span class="az">Əlbəttə. «Rəhbəri məğlub et» oyunu şounun ən sevilən anlarından biridir.</span><span class="ru">Конечно. Партия «Rəhbəri məğlub et» — один из самых любимых моментов шоу.</span></p></details>
       <details><summary><span class="az">Qiymət nə qədərdir?</span><span class="ru">Сколько это стоит?</span></summary><p><span class="az">Qiymət iştirakçı sayından və formatdan asılıdır. Sorğu göndərin — sizə kommersiya təklifi hazırlayaq.</span><span class="ru">Зависит от числа участников и формата. Оставьте заявку — подготовим коммерческое предложение.</span></p></details>
     </div>
